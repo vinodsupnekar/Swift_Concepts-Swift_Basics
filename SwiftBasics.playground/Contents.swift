@@ -68,3 +68,31 @@ public struct ThermometerStruct {
 //thermometerStruct.registerTemperature(55)
 // Above let thermometerStruct gives compiler error as it cannot be modified as class let variable.
 //To fix this make thermometerStruct as var
+
+
+//*****
+//Closure uses variavle inside caprute list, copies it.
+//var thing = "cars"
+//
+//let closure = { [thing] in
+//  print("I love \(thing)")
+//}
+//
+//thing = "airplanes"
+
+//closure()
+
+//o/p = I love cars
+
+//Closure without capture list stores reference to a variable.
+var thing = "cars"
+
+let closure = {
+  print("I love \(thing)")
+}
+
+thing = "airplanes"
+
+closure() // Prints: "I love airplanes"
+
+
