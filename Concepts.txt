@@ -1,0 +1,82 @@
+
+Various ways to unwrap an options ? And their safety?
+
+1.var x : String? = "Test"
+
+7 ways:- 
+ A.Forced unwrapping — unsafe.
+
+let a: String = x!
+
+B. Implicitly unwrapped variable declaration — unsafe in many cases.
+
+var text: String! = "Hello"
+let name = text
+
+we don't get an Optional String but a plain String because text automatically unwrapped it's content.
+
+However text is still an optional so we can put a nil value inside it
+
+text = nil
+
+But as soon as we read it (and it contains nil) we get a fatal error because we are unwrapping an optional containing nil
+
+
+Code:- let anotherName = text
+
+fatal error: unexpectedly found nil while unwrapping an Optional value 
+
+
+C.Optional binding — safe.
+
+if let a = x {
+  print("x was successfully unwrapped and is = \(a)")
+}
+
+
+D. Optional chaining — safe.
+
+let a = x?.count
+
+E. Nil coalescing operator — safe.
+
+let a = x ?? ""
+
+
+F. Guard statement — safe.
+
+guard let a = x else {
+  return
+}
+
+
+G . Optional pattern — safe.
+
+
+if case let a? = x {
+  print(a)
+}
+
+
+Swift implements optional types as an enum with two cases, .none and .some(Wrapped). It’s often not necessary but we can switch on an optional type:
+
+let capital: String? = "London"
+
+switch capital {
+case .none:
+  print("value is nil")
+case .some(let capital):
+  print("value is \(capital)")
+}
+
+
+The Optional pattern is an identifier followed by a question mark. We can use it to replace enumeration case patterns such as .some(let capital) with let capital?:
+
+switch capital {
+case .none:
+    print("value is nil")
+case let capital?:
+    print("value is \(capital)")
+}
+
+// value is London
