@@ -13,6 +13,7 @@
 		0437533D29B312A6009DDC75 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0437533C29B312A6009DDC75 /* Preview Assets.xcassets */; };
 		0437534829B312A6009DDC75 /* SwiftUIDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0437534729B312A6009DDC75 /* SwiftUIDemoTests.swift */; };
 		0437535329B312A6009DDC75 /* SwiftUIDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0437535229B312A6009DDC75 /* SwiftUIDemoUITests.swift */; };
+		0437536429B31B14009DDC75 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0437536329B31B13009DDC75 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		0437534E29B312A6009DDC75 /* SwiftUIDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUIDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0437535229B312A6009DDC75 /* SwiftUIDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIDemoUITests.swift; sourceTree = "<group>"; };
 		0437535429B312A6009DDC75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0437536329B31B13009DDC75 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 			children = (
 				0437533529B312A2009DDC75 /* SwiftUIDemoApp.swift */,
 				0437533729B312A2009DDC75 /* ContentView.swift */,
+				0437536329B31B13009DDC75 /* SettingsView.swift */,
 				0437533929B312A6009DDC75 /* Assets.xcassets */,
 				0437533E29B312A6009DDC75 /* Info.plist */,
 				0437533B29B312A6009DDC75 /* Preview Content */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0437536429B31B14009DDC75 /* SettingsView.swift in Sources */,
 				0437533829B312A2009DDC75 /* ContentView.swift in Sources */,
 				0437533629B312A2009DDC75 /* SwiftUIDemoApp.swift in Sources */,
 			);
