@@ -11,12 +11,12 @@ import SwiftUI
 struct SwiftUIDemoApp: App {
     var body: some Scene {
         WindowGroup {
-            TabView {
-                ContentView()
-                    .tabItem { Label("Journal", systemImage: "book") }
+//            TabView {
+//                ContentView()
+//                    .tabItem { Label("Journal", systemImage: "book") }
                 SettingsView()
-                    .tabItem { Label("Settings", systemImage: "gear") }
-            }
+//                    .tabItem { Label("Settings", systemImage: "gear") }
+//            }
         }
     }
 }
