@@ -9,9 +9,7 @@ import SwiftUI
 
 struct MovieDetail: View {
     
-    @State var title = ""
-    @State var rating = 3.0
-    @State var seen = false
+    @State var movie: Movie
     
    
     var body: some View {
@@ -19,7 +17,7 @@ struct MovieDetail: View {
             Section{
                 SectionTitle(title: "Title")
 
-                TextField("Movie Title", text: $title)
+                TextField("Movie Title", text: $movie.title)
                 
             }
             Section {
@@ -27,22 +25,20 @@ struct MovieDetail: View {
 
                 HStack {
                     Spacer()
-                    Text(String(repeating: "*", count: Int(rating))).foregroundColor(.yellow).font(.title)
+                    Text(String(repeating: "*", count: Int(movie.rating))).foregroundColor(.yellow).font(.title)
                 Spacer()
                 }
-                Slider(value: $rating, in: 1...5, step: 1)
+                Slider(value: $movie.rating, in: 1...5, step: 1)
 
             }
             Section {
                 SectionTitle(title: "User Exp")
-
-                Toggle(isOn: $seen){
-                    if title == "" {
-                        Text("Has seen the movie")
-                    } else {
-                        Text("Has seen the  \(title)")
-
-                    }
+                Toggle(isOn: $movie.seen) {
+                    if movie.title == "" {
+                    Text("Has seen the movie")
+                } else {
+                    Text("Has seen the  \(movie.title)")
+                }
                 }
             }
             Section {
@@ -54,7 +50,7 @@ struct MovieDetail: View {
                         Text("Save")
                         Spacer()
                     }
-                }
+                }.disabled(movie.title.isEmpty)
             }
         }.listStyle(GroupedListStyle())
     }
@@ -62,7 +58,7 @@ struct MovieDetail: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetail()
+        MovieDetail(movie: Movie())
     }
 }
 
