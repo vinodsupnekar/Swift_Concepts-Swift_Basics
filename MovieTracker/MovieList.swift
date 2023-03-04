@@ -9,10 +9,16 @@ import SwiftUI
 
 struct MovieList: View {
     
-    var movies = [Movie(), Movie(), Movie()]
+    @ObservedObject var movieStorage = MovieStorage()
     var body: some View {
-        List(movies) { movie in
+        NavigationView {
+            List(movieStorage.movies) { movie in
+            NavigationLink(
+                destination: MovieDetail(movie: movie, movieStorage: movieStorage, newMovie: false)) {
             Text(movie.title)
+            }}.navigationTitle("Movies").navigationBarItems(trailing: NavigationLink(destination: MovieDetail(movie:Movie(), movieStorage: movieStorage, newMovie: true)){
+                Image(systemName: "plus")
+            })
         }
     }
 }

@@ -13,3 +13,7 @@ struct Movie: Identifiable {
      var rating = 3.0
      var seen = false
 }
+
+class MovieStorage: ObservableObject {
+    @Published var movies = [Movie]()
+}

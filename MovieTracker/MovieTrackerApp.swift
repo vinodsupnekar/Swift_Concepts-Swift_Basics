@@ -11,7 +11,8 @@ import SwiftUI
 struct MovieTrackerApp: App {
     var body: some Scene {
         WindowGroup {
-            MovieDetail(movie: Movie())
+            MovieList()
+//            MovieDetail(movie: Movie())
         }
     }
 }
