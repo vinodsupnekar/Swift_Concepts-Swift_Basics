@@ -96,3 +96,65 @@ thing = "airplanes"
 closure() // Prints: "I love airplanes"
 
 
+//struct TestStruct {
+//   var someWhere: Int
+//
+//   init(dict: [String: Int]) {
+//    self.init(someVarible: dict[“someVar”]!)
+//   }
+//}
+
+
+//struct TestStruct {
+//    var someWhere: Int
+//}
+//
+//extension TestStruct {
+//    init(dict: [String: Int]) {
+//        self.init(someWhere : dict ["someVar"]! )
+//    }
+//}
+
+
+//struct TestStruct {
+//    var someWhere: Int
+//    var dict: [String: Int]
+//    init(_ someWhere:Int, _ dict: [String: Int])
+//    { self.init(someWhere, dict)
+//    }
+//}
+
+/**
+ * The knows API is defined in the parent class VersionControl.
+ *     func isBadVersion(_ version: Int) -> Bool{}
+ */
+
+let a = [1...100]
+print(a)
+//
+//class Solution {
+//    func firstBadVersion(_ n: Int) -> Int {
+//        let a = [1...n]
+//        return getBadVersion(a, 0, n-1)
+//    }
+//
+//    func getBadVersion(a:[Int] ,left: Int, right: Int) -> Int {
+//        let middle = left + (right - left)/2
+//        if left > right {
+//            return -1
+//        } else if isBadVersion(a[middle]) {
+//            //check if its previous version is also bad, if yes then return , else call api.
+//            let middlePreviousOne = middle - 1
+//            if middlePreviousOne >= 0 {
+//               if isBadVersion(a[middlePreviousOne]) {
+//                   return middle
+//               } else {
+//                    getBadVersion(a, left,middle - 1)
+//               }
+//            }
+//        } else {
+//            getBadVersion(a, middle + 1, right)
+//        }
+//
+//    }
+//}
