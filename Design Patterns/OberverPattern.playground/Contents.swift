@@ -1,3 +1,4 @@
+import Foundation
 
 enum TrafficeLight: String {
     case Greeen
@@ -105,4 +106,34 @@ trafficeLightSubject.removeObserver(vendorObserver)
 
 
 trafficeLightSubject.trafficLightColor = TrafficeLight.Greeen.rawValue
+
+
+// KVO - KVC
+
+class Bank: NSObject {
+    var name: String
+    @objc dynamic var phone: String
+    
+    init(name: String, phone: String) {
+        self.name = name
+        self.phone = phone
+    }
+}
+
+let bank = Bank(name: "YES", phone: "12345")
+bank.phone = "5432"
+//KVC
+let phone = bank.value(forKey: "phone")
+
+//KVO
+//bank.addObserver(bank, forKeyPath: "phone", options: [.new, .old], context: nil)
+
+bank.observe(\.phone, options: [.new, .old]) { (bank, value) in
+    print("value oldValue ==> \(String(describing: value.oldValue))")
+    print("value newValue ==> \(String(describing: value.newValue))")
+
+}
+
+bank.phone = "0000"
+bank.setValue("9999", forKey: "phone")
 
