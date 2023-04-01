@@ -1,0 +1,607 @@
+Swift Interview:-
+
+
+1.Struct vs class:- Prsh:- 3/5
+
+-struct are value types.
+-strcuct can have properties and functions
+-can be extended.
+-confirm to protocols.
+-Can be used with Generics
+-Can define subscript
+
+Class:- All above with below additional points:- 
+—> Reference Type
+-Can be deinitized
+-Inherited
+
+Memory Allocation struct and class:- 
+
+Struct ==> Stack and Class ==> Heap.
+
+Stack:-  
+	-LIFO
+	-Each Thread has exclusive stack.
+	-Amount required calculated at compiled time.
+	-Cost of allocation/deallocation is less.Because stack pointer moved up and down.
+	-Faster that Heap.
+
+Heap:- 
+	-Used when size cannot calculated at compile time.
+	-Reference type —> Lifetime cannot be judged.
+	- Global memory space is needed for reference type ==> Thread unsafe.
+	-Tougher to manage
+	-Comparatively slow.
+
+Reddy :- Thread safe: -wrong 
+
+-1. Copy On Write(Applicable for Value Types )(Array and Dictionaries.):- 
+
+-Concept ==> If 2 variables are suppose to hold exactly same values then both of them are poignant to same object unless mutation is needed.
+
+-0/5
+
+-2.How to use convenience initializer for structs?
+
+	
+Ans:-  struct TestStruct {
+	var someWhere: Int
+
+	init(dict: [String: Int]) {
+	 self.init(someVarible: dict[“someVar”]!)
+	}
+}
+
+=> Above line will error as self. Init is not default member wise initialiser.
+
+Correct Code:- 
+struct TestStruct {
+	var someWhere: Int
+}
+
+extension TestStruct {
+	init(dict: [String: Int]) {
+	 self.init(someVarible : dict [“someVar”]! )
+	}
+}
+
+
+
+struct TestStruct { var someWhere: Int var dict: [String: Int] init(_ someWhere:Int, _ dict: [String: Int]) { self.init(someWhere: someWhere, dict: dict) }}
+
+
+Copy on write:- array is reference type> Prakash
+
+-3. Protocol Extensions:- Prsh :- 0/5 :- mapped it with Optional protocols??
+
+
+Protocols let you describe what methods something should have, but don’t provide the code inside. Extensions let you provide the code inside your methods, but only affect one data type – you can’t add the method to lots of types at the same time.
+Protocol extensions solve both those problems: they are like regular extensions, except rather than extending a specific type like Int you extend a whole protocol so that all conforming types get your changes.
+
+let pythons = ["Eric", "Graham", "John", "Michael", "Terry", "Terry"]
+let beatles = Set(["John", "Paul", "George", "Ringo"])
+
+Swift’s arrays and sets both conform to a protocol called Collection, so we can write an extension to that protocol to add a summarize() method to print the collection neatly
+extension Collection {
+    func summarize() {
+        print("There are \(count) of us:")
+
+        for name in self {
+            print(name)
+        }
+    }
+}
+Both Array and Set will now have that method, so we can try it out:
+pythons.summarize()
+beatles.summarize()
+
+
+-4. protocol Drawable {
+	var edges: Int {get set}
+	var share: String {return edge == 3 ? “Triangel”: “Quadrianle”}
+}
+
+Prakash:- 
+
+To fix this use protocol extension:- 
+protocol Drawable {
+	var edges: Int {get set}
+}
+ extension  Drawable {
+	var share: String {return edge == 3 ? “Triangel”: “Quadrianle”}
+
+}
+
+- protocol Drawable { var edges: Int {get set} var share: String {return edge == 3 “Triangel” ?: “Quadrianle”}}
+
+
+-5. How background iOS app gets resumed in foreground?
+When user launches an app that is currently in background, the system moves app to the inactive state and then to the active state
+
+-4/5
+
+
+. What are the steps involved when app enter to foreground after device rebooted?
+When user launches an app for the first time or after device reboot or after system terminate the app, the system moves app to the active state
+
+
+
+
+
+
+
+1.
+
+import UIKit 
+var view1 = UIView() 
+view1.alpha = 0.5 
+
+let view2 = UIView() 
+view2.alpha = 0.5 // Will this line compile?
+
+
+Yes, the last line will compile. view1 is a variable, and you can reassign it to a new instance of UIView. With let, you can assign a value only once, so the following code would not compile:
+view2 = view1 // Error: view2 is immutable
+
+
+However, UIView is a class with reference semantics, so you can mutate the properties of view2 — which means that the last line will compile:
+let view2 = UIView() view2.alpha = 0.5 // Yes!
+
+
+
+2.
+
+var animals = ["fish", "cat", "chicken", "dog"]
+animals.sort { (one: String, two: String) -> Bool in
+    return one < two
+}
+print(animals)
+
+
+Ans:- 
+
+The type inference system automatically calculates both the type of the parameters in the closure and the return type, so you can get rid of them:
+
+animals.sort { (one, two) in return one < two }
+
+You can substitute the $i notation for the parameter names:
+
+animals.sort { return $0 < $1 }
+
+In single statement closures, you can omit the return keyword. The value of the last statement becomes the return value of the closure:
+
+animals.sort { $0 < $1 }
+
+Finally, since Swift knows that the elements of the array conform to Equatable, you can simply write:
+
+animals.sort(by: <)
+
+
+3. Dinesh:- 4/5 :- 
+In some cases, you can't avoid using implicitly unwrapped optionals. When? Why?
+
+
+The most common reasons to use implicitly unwrapped optionals are:
+
+When you cannot initialize a property that is not nil by nature at instantiation time. A typical example is an Interface Builder outlet, which always initializes after its owner. In this specific case — assuming it's properly configured in Interface Builder — you've guaranteed that the outlet is non-nil before you use it.
+To solve the strong reference cycle problem, which is when two instances refer to each other and require a non-nil reference to the other instance. In such a case, you mark one side of the reference as unowned, while the other uses an implicitly unwrapped optional.
+
+
+
+4.  Dinesh:- 3.5/5
+var x : String? = "Test"
+
+There are seven ways
+
+Forced unwrapping — unsafe. YES
+
+let a: String = x!
+
+Implicitly unwrapped variable declaration — unsafe in many cases.
+
+var a = x!
+
+Optional binding — safe. YES
+
+if let a = x {
+  print("x was successfully unwrapped and is = \(a)")
+}
+
+Optional chaining — safe. 
+
+let a = x?.count
+
+Nil coalescing operator — safe.
+
+let a = x ?? ""
+
+Guard statement — safe. YES
+
+guard let a = x else {
+  return
+}
+
+Optional pattern — safe.
+
+if case let a? = x {
+  print(a)
+}
+
+3.5/5
+
+5.What's the difference between nil and .none?
+
+There is no difference, as Optional.none (.none for short) and nil are equivalent.
+
+In fact, this statement outputs true:
+
+nil == .none
+
+The use of nil is more common and is the recommended convention.
+
+1/5
+
+
+6.Here's a model of a thermometer as a class and a struct. The compiler will complain about the last line. Why does it fail to compile?
+
+
+public class ThermometerClass {
+  private(set) var temperature: Double = 0.0
+  public func registerTemperature(_ temperature: Double) {
+    self.temperature = temperature
+  }
+}
+
+let thermometerClass = ThermometerClass()
+thermometerClass.registerTemperature(56.0)
+
+public struct ThermometerStruct {
+  private(set) var temperature: Double = 0.0
+  public mutating func registerTemperature(_ temperature: Double) {
+    self.temperature = temperature
+  }
+}
+
+let thermometerStruct = ThermometerStruct()
+thermometerStruct.registerTemperature(56.0)
+
+Prakash:- 0/5
+
+
+Ans:- The ThermometerStruct is correctly declared with a mutating function to change its internal variable temperature. The compiler complains because you've invoked registerTemperature on an instance created via let, which is therefore immutable. Change let to var to make the example compile.
+
+With structures, you must mark methods that change the internal state as mutating, but you cannot invoke them from immutable variables.
+
+
+
+6. What will this code print and why?
+
+
+var thing = "cars"
+
+let closure = { [thing] in
+  print("I love \(thing)")
+}
+
+thing = "airplanes"
+
+closure()
+
+Ans:-
+
+It'll print: I love cars. The capture list creates a copy of thing when you declare the closure. This means that captured value doesn't change even if you assign a new value to thing.
+
+If you omit the capture list in the closure, then the compiler uses a reference instead of a copy. Therefore, when you invoke the closure, it reflects any change to the variable. You can see this in the following code:
+
+var thing = "cars"
+
+let closure = {    
+  print("I love \(thing)")
+}
+
+thing = "airplanes"
+
+closure() // P
+
+5/5
+
+7.
+Can you add a stored property to a type by using an extension? How or why not?
+- 0/5
+
+No, it's not possible. You can use an extension to add new behavior to an existing type, but not to alter either the type itself or its interface. If you add a stored property, you'd need extra memory to store the new value. An extension cannot manage such a task.
+
+
+Extensions add new functionality to an existing class, structure, enumeration, or protocol type. This includes the ability to extend types for which you don’t have access to the original source code (known as retroactive modeling). Extensions are similar to categories in Objective-C. (Unlike Objective-C categories, Swift extensions don’t have names.)
+
+Extensions in Swift can:
+
+Add computed instance properties and computed type properties
+
+Define instance methods and type methods
+
+Provide new initializers
+
+Define subscripts
+
+Define and use new nested types
+
+Make an existing type conform to a protocol
+
+
+
+8.Lazy/ stored property-
+
+
+9.Protocol Extensions:-
+
+
+
+
+-6 How to differentiate between Serial/ Concurrent and  Synchronuos / Asynchronuos  ?
+- Serial/ Concurrent affects the Queue that is being dispatched, while Synchronuos / Asynchronuos affects current thread.
+
+Dinesh:- 5/5
+
+-7. 
+
+Predict Output 1 :- 2.5/5
+
+let queue = DispatchQueue(label: "printNumbers", attributes: .concurrent)
+var numbers = ""
+for i in 50...55 {
+    numbers += "\(i) "
+}
+print(numbers)
+
+queue.async {
+    var numbers = ""
+    for i in 10...55 {
+        numbers += "\(i) "
+    }
+    print(numbers)
+}
+
+queue.async {
+    var numbers = ""
+    for i in 0...5 {
+        numbers += "\(i) "
+    }
+    print(numbers)
+}
+
+numbers = ""
+
+for i in 30...35 {
+    numbers += "\(i) "
+}
+print(numbers)
+
+
+
+Solution:-  
+50 51 52 53 54 55  Kml 50..55
+30 31 32 33 34 35 
+0 1 2 3 4 5 
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 
+
+
+import PlaygroundSupport
+import Foundation
+
+
+
+PlaygroundPage.current.needsIndefiniteExecution = true
+
+let queue = DispatchQueue(label: "printNumbers")
+var numbers = ""
+for i in 50...55 {
+    numbers += "\(i) "
+}
+print(numbers)
+
+queue.async {
+    var numbers = ""
+    for i in 10...55 {
+        numbers += "\(i) "
+    }
+    print(numbers)
+}
+
+queue.async {
+    var numbers = ""
+    for i in 0...5 {
+        numbers += "\(i) "
+    }
+    print(numbers)
+}
+
+numbers = ""
+
+for i in 30...35 {
+    numbers += "\(i) "
+}
+print(numbers)
+
+
+Output:- 
+50 51 52 53 54 55 kml. Check offline
+30 31 32 33 34 35 
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 
+0 1 2 3 4 5 
+
+-8. -Can we cancel task in GCD?
+
+
+
+-9.
+
+Target Queue:- 0/5
+let target_Queue = DispatchQueue(label: "C")
+let a = DispatchQueue(label: "A",target: target_Queue) // a is serial queue, as by default custom queue is serial queue.
+let b = DispatchQueue(label: "B", target: target_Queue) // Queue b will inherit type from Queue a as serial queue
+a.async {
+    for i in 0...5 {
+        print(i)
+    }
+}
+a.async {
+    for i in 6...10 {
+        print(i)
+    }
+}
+
+b.async {
+    for i in 11...15 {
+        print(i)
+    }
+}
+
+b.async {
+    for i in 16...20 {
+        print(i)
+    }
+}
+
+Whats will be output?
+Solution :- 0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+
+
+How can you make multiple api calls and proceed only on the completion of all? 
+	Shubham:- 0/5
+ - DispatchGroup
+	-notify and wait.
+
+5. Fix the Code:- 0/5
+	-Critical section :- Part of program which tries to access shared resource.
+	- How to avoid race condition in the code:- 
+	Solution:-
+	 a. Barrier flags while creating concurrent DispatchQueue :- tells system that while executing barrier block no other part of threads  can execute.
+	 b. (More customised and powerful)Semaphores - using wait and restrict methods is restrict the access to critical section to a particular number of threads, using counter value , counter. = 5 , Thread gets access, wait() called counter = 4, once work done thread calls signal(), counter = 5, and so on.
+
+	shb:- 2.5/5
+	
+	-Semaphores may results in Priority Invertion:-
+		- Road is shared resource, its accessed by lets say 10 vehicles, now Emergency vehicle comes in , now its a High priority task.
+		- Now there might be few low priority vehicles which will not give way to this vehicle to cross the road.
+		-This is a issue called as Priority Invertion, High Priority thread waiting for low priority thread.
+		
+
+
+
+
+
+GIT:- 
+
+4/5
+Q1. If pod B already installed (1.0.0), now new version for pod B is released(1.1.0), if use ran pod install what will be version installed for pod B -  
+	Answer :- 1.0.0 as pod update is required to get latest released version.
+-	0/5
+	0/5
+Q2:- If pod file.lock is not committed and we only mentioned the pods libraries used in the project inside podfile , will it work? 
+	-No, as internal dependency pods will no have listed inside podfile and if those pods are updated , then pod install will result in different versions of dependent pods which might cause inconsistency.
+	- 0/5
+
+
+When to  use pod install and pod update
+
+1.What is Cocoapods:- 
+	- Dependecy manager for Swift and Objc libraries.
+	-Pods are widely used as Carthage and SPM doing same job.
+
+2. Installing:-
+ Sudo gem install cocoapods 2/5
+ Why sudo :- allow us to run command as another user, root by default.
+			-We use it to access Ruby installed on MacOS.
+			-Cocoapods are built using Ruby.
+			- Rubygem is a package manager for distributing Ruby libraries , or what they called as gems and using the 			  command gem install, we are requesting that package manager to install the mentioned library.
+
+
+DS>
+
+1.How to implement a queue using stack? 0/5
+
+A queue can be implemented using two stacks. Let q be the queue and stack1 and stack2 be the 2 stacks for implementing q. We know that stack supports push, pop, and peek operations and using these operations, we need to emulate the operations of the queue - enqueue and dequeue. Hence, queue q can be implemented in two methods (Both the methods use auxillary space complexity of O(n)):
+
+
+1. By making enqueue operation costly:
+	•	Here, the oldest element is always at the top of stack1 which ensures dequeue operation occurs in O(1) time complexity.
+	•	To place the element at top of stack1, stack2 is used.
+	•	Pseudocode:
+	◦	Enqueue: Here time complexity will be O(n)
+	•	
+enqueue(q, data):  
+While stack1 is not empty:
+     Push everything from stack1 to stack2.
+      Push data to stack1
+      Push everything back to stack1.
+	•	Dequeue: Here time complexity will be O(1)
+deQueue(q):
+ If stack1 is empty then error  else
+ Pop an item from stack1 and return it
+
+
+2. By making the dequeue operation costly:
+	•	Here, for enqueue operation, the new element is pushed at the top of stack1. Here, the enqueue operation time complexity is O(1).
+	•	In dequeue, if stack2 is empty, all elements from stack1 are moved to stack2 and top of stack2 is the result. Basically, reversing the list by pushing to a stack and returning the first enqueued element. This operation of pushing all elements to a new stack takes O(n) complexity.
+	•	Pseudocode:
+	◦	Enqueue: Time complexity: O(1)
+enqueue(q, data):    
+Push data to stack1
+	•	Dequeue: Time complexity: O(n)
+dequeue(q): 
+If both stacks are empty then raise error.
+If stack2 is empty:  
+While stack1 is not empty:
+ push everything from stack1 to stack2. 
+
+  Pop the element from stack2 and return it.
+
+
+2 2 2 0 0
+
+Swift 5 Prakash:-  2/5
+
+ARC:- Xocde Leak Prakash:- 2/5
+
+Lazy:- Prakash- 2/5
+
+Computed properties:- 5/5
+
+Optional :- 5/5
+
+Coredata :- 1/5
+
+Sync / Async diff:- 1/5
+
+GCD :-  0
+QoS:- 0
+
+[14:46] Vinod Damaji Supnekar
+[1,2,5,6]
+
+7.
+
+
+
+

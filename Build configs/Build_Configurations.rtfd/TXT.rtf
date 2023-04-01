@@ -1,0 +1,660 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;\f1\fnil\fcharset0 HelveticaNeue-Medium;\f2\fnil\fcharset0 HelveticaNeue-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red25\green28\blue31;\red25\green28\blue31;\red15\green82\blue252;
+\red255\green255\blue255;\red0\green0\blue0;\red214\green219\blue224;\red202\green23\blue113;}
+{\*\expandedcolortbl;;\cssrgb\c12941\c14510\c16078;\cssrgb\c12941\c14510\c16078;\cssrgb\c5098\c43137\c99216;
+\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c0\c3137;\cssrgb\c87059\c88627\c90196;\cssrgb\c83922\c20000\c51765;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+Referecne:- https://cocoacasts.com/tips-and-tricks-managing-build-configurations-in-xocde- \cf3 \outl0\strokewidth0 Here user defined variables are  directly added in a project setting \cf3 \
+\cf2 \outl0\strokewidth0 \strokec2 \
+\
+And. https://www.kodeco.com/21441177-building-your-app-using-build-configurations-and-xcconfig -   \cf3 \outl0\strokewidth0 Here user defined variables are added from .xcconfig file \cf3 \
+\cf2 \outl0\strokewidth0 \strokec2 \
+\
+1.st \cf3 \outl0\strokewidth0 https://cocoacasts.com/tips-and-tricks-managing-build-configurations-in-xocde :- 
+\f1\fs48 \cf2 \outl0\strokewidth0 \strokec2 Tips and Tricks\
+\pard\pardeftab720\sl720\sa120\partightenfactor0
+
+\fs60 \cf2 Managing Build Configurations in Xcode\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs32 \cf2 by Bart Jacobs in\'a0{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/categories/tips-and-tricks"}}{\fldrslt \cf4 \ul \ulc4 \strokec4 Tips and Tricks}}\
+\pard\pardeftab720\sl240\sa240\partightenfactor0
+
+\f2\b\fs24 \cf5 \strokec5 Swift 4
+\f0\b0\fs32 \cf2 \strokec2 \'a0
+\f2\b\fs24 \cf5 \strokec5 Xcode 10
+\f0\b0\fs32 \cf2 \strokec2 \'a0
+\f2\b\fs24 \cf5 \strokec5 ios 12
+\f0\b0\fs32 \cf2 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/collections/tips-and-tricks"}}{\fldrslt \cf4 \cb6 \ul \ulc4 \strokec4 Tips and Tricks}}\cb6 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamarb240 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth932\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth15488\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b\fs24 \cf2 \cb1 1\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/tips-and-tricks-removing-string-literals"}}{\fldrslt 
+\f0\b0 \cf4 \ul \ulc4 \strokec4 Removing String Literals}}
+\f0\b0 \'a003:54\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamarb240 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth932\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth15488\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b \cf2 2\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f0\b0 \cf2 Managing Build Configurations in Xcode\'a012:01\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamarb240 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth932\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth15488\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b \cf2 3\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/tips-and-tricks-using-a-branching-strategy-that-works"}}{\fldrslt 
+\f0\b0 \cf4 \ul \ulc4 \strokec4 Using a Branching Strategy That Works}}
+\f0\b0 \'a013:27\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamarb240 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth932\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth15488\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b \cf2 4\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/tips-and-tricks-what-are-self-executing-closures"}}{\fldrslt 
+\f0\b0 \cf4 \ul \ulc4 \strokec4 What Are Self-Executing Closures}}
+\f0\b0 \'a007:40\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamarb240 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth932\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth15488\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b \cf2 5\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/tips-and-tricks-five-simple-tips-to-improve-the-code-you-write"}}{\fldrslt 
+\f0\b0 \cf4 \ul \ulc4 \strokec4 Five Simple Tips to Improve the Code You Write}}
+\f0\b0 \'a006:47\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamarb240 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth932\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth15488\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b \cf2 6\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/tips-and-tricks-ten-xcode-tricks-every-developer-should-know"}}{\fldrslt 
+\f0\b0 \cf4 \ul \ulc4 \strokec4 Ten Xcode Tricks Every Developer Should Know}}
+\f0\b0 \'a006:45\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamarb240 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth932\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth15488\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b \cf2 7\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/tips-and-tricks-using-didset-property-observers-to-configure-outlets"}}{\fldrslt 
+\f0\b0 \cf4 \ul \ulc4 \strokec4 Using didSet Property Observers to Configure Outlets}}
+\f0\b0 \'a002:50\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamarb240 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth932\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth15488\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b \cf2 8\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/tips-and-tricks-why-you-should-default-to-private-outlets"}}{\fldrslt 
+\f0\b0 \cf4 \ul \ulc4 \strokec4 Why You Should Default to Private Outlets}}
+\f0\b0 \'a003:17\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamarb240 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth932\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth15488\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrnil \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt120 \clpadl120 \clpadb120 \clpadr120 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b \cf2 9\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/tips-and-tricks-how-to-encode-null-using-jsonencoder"}}{\fldrslt 
+\f0\b0 \cf4 \ul \ulc4 \strokec4 How to Encode Null Using JSONEncoder?}}
+\f0\b0 \'a005:59\cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+
+\fs32 \cf2 \cb6 Resources\
+\pard\pardeftab720\sa240\qc\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/signin?origin=/tips-and-tricks-managing-build-configurations-in-xocde"}}{\fldrslt \cf4 \cb1 \ul \ulc4 \strokec4 Sign in with GitHub}}\cb1 \'a0to download the source files of this episode for free.\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf2 A brand new Xcode project defines two build configurations,\'a0
+\f2\b Debug
+\f0\b0 \'a0and\'a0
+\f2\b Release
+\f0\b0 . Most projects define one or more additional build configurations for various reasons. This isn't new and it's a good practice to use build configurations to tailor a build to the specific needs of the environment it's going to be deployed to.\
+In this episode, I show you how to safely manage data that is specific for a build configuration, such as API keys, credentials, and other sensitive data. There are several strategies to manage build configurations, but there are important differences you need to consider, especially in the context of security.\
+\pard\pardeftab720\sl560\sa120\partightenfactor0
+
+\f1\fs48 \cf2 Adding a Configuration\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs32 \cf2 Fire up Xcode and create a new project by choosing the\'a0
+\f2\b Single View App
+\f0\b0 \'a0template from the\'a0
+\f2\b iOS > Application
+\f0\b0 \'a0section.\
+\
+Name the project\'a0
+\f2\b Configurations
+\f0\b0 , set\'a0
+\f2\b Language
+\f0\b0 \'a0to\'a0
+\f2\b Swift
+\f0\b0 , and make sure the checkboxes at the bottom are unchecked. Tell Xcode where you'd like to store the project and click\'a0
+\f2\b Create
+\f0\b0 .\
+\
+Open the\'a0
+\f2\b Project Navigator
+\f0\b0 \'a0on the left and click the project at the top. Select the project in the\'a0
+\f2\b Project
+\f0\b0 \'a0section to show the project details. A brand new Xcode project defines two build configurations,\'a0
+\f2\b Debug
+\f0\b0 \'a0and\'a0
+\f2\b Release
+\f0\b0 .\
+\
+You commonly use the\'a0
+\f2\b Debug
+\f0\b0 \'a0configuration during development whereas the\'a0
+\f2\b Release
+\f0\b0 \'a0configuration is used for creating App Store or TestFlight builds. This probably isn't new to you.\
+Many applications communicate with a backend and it's a common practice to have a staging and a production environment. The staging environment is used during development. Double-click the\'a0
+\f2\b Debug
+\f0\b0 \'a0configuration and rename it to\'a0
+\f2\b Staging
+\f0\b0 .\
+\
+Let's add a third configuration for the production environment. Click the\'a0
+\f2\b +
+\f0\b0 \'a0button at the bottom of the table, choose\'a0
+\f2\b Duplicate "Staging" Configuration
+\f0\b0 , and name the configuration\'a0
+\f2\b Production
+\f0\b0 .\
+\
+\
+Let's create a scheme for each configuration to make it easy to quickly switch between environments. Select the scheme at the top and choose\'a0
+\f2\b Manage Schemes...
+\f0\b0 \'a0from the menu. Select the scheme named\'a0
+\f2\b Configurations
+\f0\b0 \'a0and click it one more time. Rename it to\'a0
+\f2\b Staging
+\f0\b0 .\
+\
+With the scheme selected, click the gear icon at the bottom and choose\'a0
+\f2\b Duplicate
+\f0\b0 . Name the scheme\'a0
+\f2\b Production
+\f0\b0 . Select\'a0
+\f2\b Run
+\f0\b0 \'a0on the left and set\'a0
+\f2\b Build Configuration
+\f0\b0 \'a0to\'a0
+\f2\b Production
+\f0\b0 .\
+\
+That's it. We now have a build configuration for staging and production. The schemes make it quick and easy to switch between build configurations.\
+\pard\pardeftab720\sl560\sa120\partightenfactor0
+
+\f1\fs48 \cf2 User-Defined Build Settings\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs32 \cf2 As I mentioned earlier, there are several solutions to manage data that is specific to a particular build configuration. In this episode, I show a solution I use in any project that has some complexity to it. Before I lay out the solution I have in mind, I'd like to show you another solution that is often used by developers.\
+Choose the project in the\'a0
+\f2\b Project Navigator
+\f0\b0 \'a0on the left. Select the\'a0
+\f2\b Configurations
+\f0\b0 \'a0target from the\'a0
+\f2\b Targets
+\f0\b0 \'a0section and click the\'a0
+\f2\b Build Settings
+\f0\b0 \'a0tab at the top.\
+\
+The\'a0
+\f2\b Build Settings
+\f0\b0 \'a0tab shows the build settings for the\'a0
+\f2\b Configurations
+\f0\b0 \'a0target. It's possible to expand this list with build settings that you define. Click the\'a0
+\f2\b +
+\f0\b0 \'a0button at the top and choose\'a0
+\f2\b Add User-Defined Setting
+\f0\b0 .\
+\
+Name the user-defined setting\'a0
+\f2\b BASE_URL
+\f0\b0 . Defining a base URL is common for applications that interact with a backend.\
+\
+What is the benefit of defining a user-defined setting? The user-defined setting allows us to set a value for\'a0
+\f2\b BASE_URL
+\f0\b0 \'a0for each build configuration. Click the triangle on the left of the user-defined setting to show the list of build configurations.\
+\
+Set the value for\'a0
+\f2\b Production
+\f0\b0 \'a0and\'a0
+\f2\b Release
+\f0\b0 \'a0to\'a0
+\f2\b https://cocoacasts.com
+\f0\b0 \'a0and the value for\'a0
+\f2\b Staging
+\f0\b0 \'a0to\'a0
+\f2\b https://staging.cocoacasts.com
+\f0\b0 .\
+\
+As the name implies, a build setting is available during the build process. Your code cannot directly access the build settings you define. That is a common misconception. There's a solution, though. Open\'a0
+\f2\b Info.plist
+\f0\b0 \'a0and add a new key/value pair. Set the key to\'a0
+\f2\b BASE_URL
+\f0\b0 \'a0and the value to\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 $(BASE_URL)
+\fs32 \cf2 \strokec2 \uc0\u8236 .\
+\
+What is the value of adding a key/value pair to the project's\'a0
+\f2\b Info.plist
+\f0\b0 ? The value of the key/value pair is updated at build time. Xcode inspects the build settings for the current build configuration and sets the value of the\'a0
+\f2\b BASE_URL
+\f0\b0 \'a0key in project's\'a0
+\f2\b Info.plist
+\f0\b0 .\
+Let's try it out. Open\'a0
+\f2\b AppDelegate.swift
+\f0\b0 \'a0and navigate to the\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 application(_:didFinishLaunchingWithOptions:)
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0method. We need to access the contents of the\'a0
+\f2\b Info.plist
+\f0\b0 \'a0file. This is possible through the\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 infoDictionary
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0property of the\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 Bundle
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0class. The bundle we are interested in is the main bundle. As the name implies, the\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 infoDictionary
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0property is a dictionary of key/value pairs and we access the value for the\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 BASE_URL
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0key.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool \{\uc0\u8236 \
+    print(Bundle.main.infoDictionary?["BASE_URL"])\uc0\u8236 \
+    return true\uc0\u8236 \
+\}\uc0\u8236 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs32 \cf2 \uc0\u8236 Select the\'a0
+\f2\b Production
+\f0\b0 \'a0scheme at the top and run the application in the simulator. Inspect the output in the console.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 Optional(https://staging.cocoacasts.com)\uc0\u8236 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs32 \cf2 \uc0\u8236 Select the\'a0
+\f2\b Staging
+\f0\b0 \'a0scheme at the top and run the application in the simulator. Inspect the output in the console. That's pretty nice. Right?\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 Optional(https://staging.cocoacasts.com)\uc0\u8236 \
+\pard\pardeftab720\sl560\sa120\partightenfactor0
+
+\f1\fs48 \cf2 \uc0\u8236 A Word About Security\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs32 \cf2 Most developers find this solution very convenient. And it is. There's one problem, though. It's easy to extract the\'a0
+\f2\b Info.plist
+\f0\b0 \'a0file from applications downloaded from the App Store. What happens if you store API keys, credentials, or other sensitive information in the\'a0
+\f2\b Info.plist
+\f0\b0 \'a0file? This introduces a significant security risk that we can and should avoid.\
+I'd like to show you a simple solution that offers the same flexibility, type safety, and improved security. Create a new Swift file and name it\'a0
+\f2\b Configuration.swift
+\f0\b0 .\
+\
+\
+Define an enum with name\'a0
+\f2\b Configuration
+\f0\b0 \'a0and a raw value of type\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 String
+\fs32 \cf2 \strokec2 \uc0\u8236 . We define a case for each build configuration,\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 staging
+\fs32 \cf2 \strokec2 \uc0\u8236 ,\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 production
+\fs32 \cf2 \strokec2 \uc0\u8236 , and\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 release
+\fs32 \cf2 \strokec2 \uc0\u8236 .\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 import Foundation\uc0\u8236 \
+\uc0\u8236 \
+enum Configuration: String \{\uc0\u8236 \
+\uc0\u8236 \
+    // MARK: - Configurations\uc0\u8236 \
+\uc0\u8236 \
+    case staging\uc0\u8236 \
+    case production\uc0\u8236 \
+    case release\uc0\u8236 \
+\uc0\u8236 \
+\}\uc0\u8236 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs32 \cf2 \uc0\u8236 Before we continue with the implementation of the\'a0
+\f2\b Configuration
+\f0\b0 \'a0enum, we need to update the\'a0
+\f2\b Info.plist
+\f0\b0 \'a0file. Open\'a0
+\f2\b Info.plist
+\f0\b0 \'a0and add a key/value pair. The key is\'a0
+\f2\b Configuration
+\f0\b0 \'a0and the value is\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 $(CONFIGURATION)
+\fs32 \cf2 \strokec2 \uc0\u8236 . The value of\'a0
+\f2\b CONFIGURATION
+\f0\b0 \'a0is automatically set for us. We don't need to worry about it. As the name implies, the value is equal to the name of the build configuration with which the build is created.\
+\
+Revisit\'a0
+\f2\b Configuration.swift
+\f0\b0 . We want easy access to the configuration of the build, the value stored in the project's\'a0
+\f2\b Info.plist
+\f0\b0 \'a0file. Define a static, constant property,\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 current
+\fs32 \cf2 \strokec2 \uc0\u8236 , of type\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 Configuration
+\fs32 \cf2 \strokec2 \uc0\u8236 . We access the value that is stored in the\'a0
+\f2\b Info.plist
+\f0\b0 \'a0file for the key\'a0
+\f2\b Configuration
+\f0\b0 \'a0and cast it to a\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 String
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0instance. We throw a fatal error if this fails because that should never happen.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 import Foundation\uc0\u8236 \
+\uc0\u8236 \
+enum Configuration: String \{\uc0\u8236 \
+\uc0\u8236 \
+    // MARK: - Configurations\uc0\u8236 \
+\uc0\u8236 \
+    case staging\uc0\u8236 \
+    case production\uc0\u8236 \
+    case release\uc0\u8236 \
+\uc0\u8236 \
+    // MARK: - Current Configuration\uc0\u8236 \
+\uc0\u8236 \
+    static let current: Configuration = \{\uc0\u8236 \
+        guard let rawValue = Bundle.main.infoDictionary?["Configuration"] as? String else \{\uc0\u8236 \
+            fatalError("No Configuration Found")\uc0\u8236 \
+        \}\uc0\u8236 \
+    \}()\uc0\u8236 \
+\uc0\u8236 \
+\}\uc0\u8236 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs32 \cf2 \uc0\u8236 We use the value from the\'a0
+\f2\b Info.plist
+\f0\b0 \'a0file to create a\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 Configuration
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0instance. We throw another fatal error if the initialization fails. Notice that we lowercase the value stored in the\'a0
+\f2\b Info.plist
+\f0\b0 \'a0file. The\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 Configuration
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0instance is returned from the closure. Don't forget to append a pair of parentheses to the closure.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 import Foundation\uc0\u8236 \
+\uc0\u8236 \
+enum Configuration: String \{\uc0\u8236 \
+\uc0\u8236 \
+    // MARK: - Configurations\uc0\u8236 \
+\uc0\u8236 \
+    case staging\uc0\u8236 \
+    case production\uc0\u8236 \
+    case release\uc0\u8236 \
+\uc0\u8236 \
+    // MARK: - Current Configuration\uc0\u8236 \
+\uc0\u8236 \
+    static let current: Configuration = \{\uc0\u8236 \
+        guard let rawValue = Bundle.main.infoDictionary?["Configuration"] as? String else \{\uc0\u8236 \
+            fatalError("No Configuration Found")\uc0\u8236 \
+        \}\uc0\u8236 \
+\uc0\u8236 \
+        guard let configuration = Configuration(rawValue: rawValue.lowercased()) else \{\uc0\u8236 \
+            fatalError("Invalid Configuration")\uc0\u8236 \
+        \}\uc0\u8236 \
+\uc0\u8236 \
+        return configuration\uc0\u8236 \
+    \}()\uc0\u8236 \
+\uc0\u8236 \
+\}\uc0\u8236 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs32 \cf2 \uc0\u8236 Let's try it out. Open\'a0
+\f2\b AppDelegate.swift
+\f0\b0 \'a0and print the current configuration. Select the\'a0
+\f2\b Staging
+\f0\b0 \'a0scheme, run the application, and inspect the output in the console.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool \{\uc0\u8236 \
+    print(Configuration.current)\uc0\u8236 \
+    return true\uc0\u8236 \
+\}\uc0\u8236 \
+staging\uc0\u8236 \
+\pard\pardeftab720\sl560\sa120\partightenfactor0
+
+\f1\fs48 \cf2 \uc0\u8236 Extending Configuration\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs32 \cf2 You probably know that I like to leverage enums for creating namespaces. Let me show you how we can improve the current implementation of the\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 Configuration
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0enum. The simplest solution is to define a static, computed property,\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 baseURL
+\fs32 \cf2 \strokec2 \uc0\u8236 , of type\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 URL
+\fs32 \cf2 \strokec2 \uc0\u8236 . You can also define the property as a static, constant property. That's a personal choice. We use a\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 switch
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0statement to return the base URL for each build configuration.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 import Foundation\uc0\u8236 \
+\uc0\u8236 \
+enum Configuration: String \{\uc0\u8236 \
+\uc0\u8236 \
+    // MARK: - Configurations\uc0\u8236 \
+\uc0\u8236 \
+    case staging\uc0\u8236 \
+    case production\uc0\u8236 \
+    case release\uc0\u8236 \
+\uc0\u8236 \
+    // MARK: - Current Configuration\uc0\u8236 \
+\uc0\u8236 \
+    static let current: Configuration = \{\uc0\u8236 \
+        guard let rawValue = Bundle.main.infoDictionary?["Configuration"] as? String else \{\uc0\u8236 \
+            fatalError("No Configuration Found")\uc0\u8236 \
+        \}\uc0\u8236 \
+\uc0\u8236 \
+        guard let configuration = Configuration(rawValue: rawValue.lowercased()) else \{\uc0\u8236 \
+            fatalError("Invalid Configuration")\uc0\u8236 \
+        \}\uc0\u8236 \
+\uc0\u8236 \
+        return configuration\uc0\u8236 \
+    \}()\uc0\u8236 \
+\uc0\u8236 \
+    // MARK: - Base URL\uc0\u8236 \
+\uc0\u8236 \
+    static var baseURL: URL \{\uc0\u8236 \
+        switch current \{\uc0\u8236 \
+        case .staging:\uc0\u8236 \
+            return URL(string: "https://staging.cocoacasts.com")!\uc0\u8236 \
+        case .production, .release:\uc0\u8236 \
+            return URL(string: "https://cocoacasts.com")!\uc0\u8236 \
+        \}\uc0\u8236 \
+    \}\uc0\u8236 \
+\uc0\u8236 \
+\}\uc0\u8236 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs32 \cf2 \uc0\u8236 There are several details I'd like to point out. First, I don't use a\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 default
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0case. I'm explicit about the value that is returned for each build configuration. This makes it easier to spot problems and it makes the code more readable and intuitive. Second, I use the exclamation mark to force unwrap the value returned by the initializer of the\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 URL
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0struct. This is one of the rare scenarios in which I use the exclamation mark to force unwrap a value. It is convenient, but, more importantly, the base URL should never be equal to\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 nil
+\fs32 \cf2 \strokec2 \uc0\u8236 .\
+Open\'a0
+\f2\b AppDelegate.swift
+\f0\b0 \'a0and print the value of the\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 baseURL
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0computed property. With the scheme set to the\'a0
+\f2\b Staging
+\f0\b0 , run the application and inspect the output in the console.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool \{\uc0\u8236 \
+    print(Configuration.baseURL)\uc0\u8236 \
+    return true\uc0\u8236 \
+\}\uc0\u8236 \
+https://staging.cocoacasts.com\uc0\u8236 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs32 \cf2 \uc0\u8236 This pattern has a few advantages over the first solution we implemented. We take advantage of Swift's type safety and we're no longer dealing with an optional value. We can also benefit from Xcode's autocompletion. These advantages are subtle, but you come to appreciate them over time.\
+Let's put the cherry on the cake by adding namespaces to the mix. Create a new Swift file and name it\'a0
+\f2\b Configuration+DarkSky.swift
+\f0\b0 .\
+\
+\
+Create an extension for the\'a0
+\f2\b Configuration
+\f0\b0 \'a0enum and define an enum with name\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 DarkSky
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0in the extension. Dark Sky is a weather service I use from time to time.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 import Foundation\uc0\u8236 \
+\uc0\u8236 \
+extension Configuration \{\uc0\u8236 \
+\uc0\u8236 \
+    enum DarkSky \{\uc0\u8236 \
+\uc0\u8236 \
+    \}\uc0\u8236 \
+\uc0\u8236 \
+\}\uc0\u8236 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs32 \cf2 \uc0\u8236 The\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 DarkSky
+\fs32 \cf2 \strokec2 \uc0\u8236 \'a0enum defines a static, constant property,\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 apiKey
+\fs32 \cf2 \strokec2 \uc0\u8236 , of type\'a0
+\fs28 \cf8 \strokec8 \uc0\u8237 String
+\fs32 \cf2 \strokec2 \uc0\u8236 . We switch on the current configuration and return a different value for each build configuration. As I mentioned earlier, you can also declare the property as a static, variable property. That is up to you to decide.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 import Foundation\uc0\u8236 \
+\uc0\u8236 \
+extension Configuration \{\uc0\u8236 \
+\uc0\u8236 \
+    enum DarkSky \{\uc0\u8236 \
+\uc0\u8236 \
+        static let apiKey: String = \{\uc0\u8236 \
+            switch Configuration.current \{\uc0\u8236 \
+            case .staging:\uc0\u8236 \
+                return "123"\uc0\u8236 \
+            case .production:\uc0\u8236 \
+                return "456"\uc0\u8236 \
+            case .release:\uc0\u8236 \
+                return "789"\uc0\u8236 \
+            \}\uc0\u8236 \
+        \}()\uc0\u8236 \
+\uc0\u8236 \
+    \}\uc0\u8236 \
+\uc0\u8236 \
+\}\uc0\u8236 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs32 \cf2 \uc0\u8236 There are several advantages to this approach. The configuration for the Dark Sky API is nicely namespaced. This also makes it easy to put the configuration for the Dark Sky API in a separate file.\
+Open\'a0
+\f2\b AppDelegate.swift
+\f0\b0 \'a0and print the API key for the Dark Sky weather service. With the scheme set to\'a0
+\f2\b Staging
+\f0\b0 , run the application and inspect the output in the console.\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf2 \uc0\u8237 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool \{\uc0\u8236 \
+    print(Configuration.DarkSky.apiKey)\uc0\u8236 \
+    return true\uc0\u8236 \
+\}\uc0\u8236 \
+123\uc0\u8236 \
+\pard\pardeftab720\sl560\sa120\partightenfactor0
+
+\f1\fs48 \cf2 \uc0\u8236 What's Next?\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs32 \cf2 This pattern adds convenience, type safety, and security to your projects. It's easy to adopt and, once it's implemented, it's straightforward to extend. It's a pattern I enjoy using for a range of reasons. I strongly recommend to give it a try.\
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/tips-and-tricks-using-a-branching-strategy-that-works"}}{\fldrslt 
+\fs30 \cf5 \cb4 \ul \ulc5 \strokec5 Next Episode\'a0
+\f2\b "Using a Branching Strategy That Works"}}\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls1\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/learn-the-four-swift-patterns-i-swear-by"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 Learn the Four Swift Patterns I Swear By}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/cocoacasts-plus"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 Cocoacasts Plus}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/signup"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 Sign Up}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0\'b7\'a0{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/signin"}}{\fldrslt \cf4 \ul \ulc4 \strokec4 Sign In}}\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf2 \'a9 Code Foundry 2016-2021\
+\pard\pardeftab720\sa240\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/privacy-policy"}}{\fldrslt \cf4 \ul \ulc4 \strokec4 Privacy Policy}}\'a0\'b7\'a0{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/terms-and-conditions"}}{\fldrslt \cf4 \ul \ulc4 \strokec4 Terms and Conditions}}\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls2\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/blog"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 Blog}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls2\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://leanpub.com/u/bartjacobs"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 Books}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls2\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/videos"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 Videos}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls2\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/categories"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 Categories}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls2\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/collections"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 Collections}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls3\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://cocoacasts.com/about-cocoacasts"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 About}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls3\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://twitter.com/_bartjacobs"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 Twitter}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls3\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://github.com/bartjacobs"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec4 GitHub}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+}

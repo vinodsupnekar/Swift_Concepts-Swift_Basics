@@ -1,0 +1,41 @@
+Opaque Type vs Protocol in Swift | Associated Type | Generics | iOS
+
+### Generics:- 
+- Way to write flexible and reusable piece of code
+-Code that can work with any type. 
+
+Func swapTwoValues<T> (_ a: inout T, _ b: inout T) {
+Let temp = a
+	a = b
+	b = temp
+}
+
+ - Type constraints - 
+	
+- Reusable code.
+
+## Associates Type:- 
+  -used with protocol to more protocol Generic.
+ 
+Definition:- 
+
+Protocol SomeProtocol {
+  associated SomePlaceholder
+
+Func someFunctionUsing(type: SomePlaceholder)
+Func someOtherFunctionReturning() -> SomePlaceholder
+
+}
+
+Struct SomeStruct : SomeProtocol {
+	typealias SomePlaceholder = Int 
+	
+    Func someFunctionUsing(type: SomePlaceholder) {
+ 	}
+    Func someOtherFunctionReturning() -> SomePlaceholder {
+	}
+}
+
+
+
+Opaque Type:- Want to hide type information returned from functions.

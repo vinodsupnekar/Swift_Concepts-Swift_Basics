@@ -1,0 +1,97 @@
+The fundamental types
+
+named type - (protocols, enumerations, structures and classes)
+compound types - (functions and tuples)
+
+Standard library types such as Bool, Int, Double, String, Optional, Array and Dictionary are clever compositions of these fundamental types. It speaks to the power of what you can do with them.
+
+**** Modeling with types ****
+
+struct StructPoint { 
+ var x, y: Double 
+} 
+
+class ClassPoint { 
+var x, y: Double
+ init(x: Double, y: Double) { 
+	(self.x, self.y) = (x, y) 
+  }
+ } 
+
+
+Difference 1: Automatic initialization:-
+
+The first, most obvious difference is the need for an initializer in the class type. If you don’t declare one, the compiler will declare an internal member-wise initializer for structures. This initializer simply assigns the member properties one by one. You must define an initializer for your class because x and y need to be initialized.
+
+Note: If you define an initializer for a structure, the compiler won’t define the member-wise one for you. A common trick is to define your initializer in an extension if you want both the compiler-generated one and a custom one.
+
+Like:- struct StructPoint {
+  var x, y: Double
+    
+}
+
+extension StructPoint {
+    init(_ dict: [String: Any]) {
+        self.init(x: 10, y: 20)
+    }
+}
+
+class ClassPoint {
+  var x, y: Double
+  init(x: Double, y: Double) { (self.x, self.y) = (x, y) }
+}
+
+
+*** Difference 2: Copy semantics :- 
+
+The second major and probably most important difference is copy semantics. Classes have reference semantics and structures have value semantics. Value semantics says that given two instances A and B, it’s impossible to affect the value B by making changes to A and vice versa.
+
+With reference semantics, you can affect one object from the other. Check out an example by adding this to the end of your playground and running it:
+
+let structPointA = StructPoint(x: 0, y: 0)
+var structPointB = structPointA
+structPointB.x += 10
+print(structPointA.x) // not affected, prints 0.0
+
+let classPointA = ClassPoint(x: 0, y: 0)
+let classPointB = classPointA
+classPointB.x += 10
+print(classPointA.x) // affected, prints 10.0
+
+With reference semantics, changing classPointB affects classPointA because both variables point to the same underlying memory. This phenomenon is not the case with the structure in which structPointA and structPointB are independent copies with value semantics.
+
+
+*** Difference 3: Scope of mutation:- 
+
+Swift supports an instance-level mutation model. This means that by using the introducer keyword let instead of var, you can lock down an instance from mutation. 
+
+This is why you must declare structPointB in the code above with a var. If you didn’t, you wouldn’t be able to add 10 to the x coordinate. The compiler would prevent this with an error.
+
+Notice that you can modify the x coordinate with the class version even though let introduces classPointB. The mutation control applies to the reference itself, not the underlying property data.
+
+
+* Note: Objective-C uses a type-level mutation model. For example, NSString is immutable. But NSMutableString, which derives from NSString, adds mutability. However, if you have a pointer to an NSString, you can’t be 100 percent sure it doesn’t point to an NSMutableString that another client could modify. Defensive copies become necessary, making this a less efficient, less safe and more error-prone programming model.
+
+The beautiful thing about declaring the x and y properties with var in StructPoint is that they can be mutable if you declare the instance with var and immutable with let. That is why you usually want to declare properties with var for structures, because you can control mutability for each instance at the point of use
+
+
+** Difference 4: Heap versus stack
+ A general rule of thumb is that classes use heap memory but structures and enumerations use stack memory. Because stack allocations are orders of magnitude faster than heap allocations, this is where value types get their fast reputation.
+
+Each thread of execution has its own stack, and stacks only change by modifying the top-most element. As a result, allocating and deallocating onto a stack doesn’t require expensive concurrency locks or fancy allocation strategies. Allocation and deallocation can be performed with a single add or subtract instruction in a single clock tick.
+
+The heap, by contrast, is shared by multiple threads and needs to be protected by concurrency locks. The operating system must protect against heap fragmentation, which can happen if you allocate and deallocate different size memory blocks. As a result, even though heap allocation has been highly optimized, it’s ultimately non-deterministic and could require thousands or even millions of instructions to perform.
+
+
+The structures are put on the stack, whereas the classes are put on both the stack and the heap. The reference count in heap memory keeps track of the object’s lifetime because reference types are shared. Only when the reference count drops to zero does deinit get called and the memory deallocated.
+
+Note: Heap for classes vs. stack for structures and enumerations is just a general rule of thumb. As you saw in the previous chapter, the Swift compiler starts by allocating everything on the heap and then reasons about the object’s lifetime to determine whether it can be allocated on the stack. For example, an escaping closure that closes over a local structure will need to put that object on the heap to extend the structure’s lifetime beyond its scope. On the other hand, a class that is created, that performs some action and then goes out of scope might be optimized away entirely and just include the instructions necessary to complete the operation.
+
+
+** Difference 5: Lifetime and identity
+
+Value types, such as structures and enumerations, generally live on the stack and are cheap to copy. Values don’t have the notion of a lifetime or intrinsic identity. References do have lifetimes, and because of that, you can define a deinit function for them. They also automatically have an identity because they reside at a specific place in memory you can use to identify them.
+
+Note: It’s possible to give a value type identity by specifying a unique property attribute. The Identifiable protocol, which adds a Hashable (and Equatable) id property, does this. The SwiftUI framework defines property wrappers, such as @State, which among other things imbue lifetime into simple value types.
+
+

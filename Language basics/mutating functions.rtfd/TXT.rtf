@@ -1,0 +1,163 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\froman\fcharset0 Times-Italic;\f2\fmodern\fcharset0 Courier;
+\f3\froman\fcharset0 Times-Bold;}
+{\colortbl;\red255\green255\blue255;\red213\green213\blue213;\red26\green26\blue26;\red18\green18\blue18;
+\red223\green30\blue123;\red20\green20\blue20;\red153\green174\blue174;\red111\green106\blue190;\red20\green18\blue25;
+\red42\green121\blue222;\red208\green89\blue70;\red33\green157\blue139;}
+{\*\expandedcolortbl;;\cssrgb\c86667\c86667\c86667;\cssrgb\c13333\c13333\c13333;\cssrgb\c9020\c9020\c9020;
+\cssrgb\c90980\c23137\c55686;\cssrgb\c10196\c10196\c10196;\cssrgb\c66275\c73725\c73725;\cssrgb\c50980\c50588\c79216;\cssrgb\c10196\c9020\c12941;
+\cssrgb\c20392\c56078\c89804;\cssrgb\c85882\c43529\c34118;\cssrgb\c12941\c67059\c61569;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww20900\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f0\fs25\fsmilli12600 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 https://www.swiftbysundell.com/articles/mutating-and-nonmutating-swift-contexts/#:~:text=What%20can%20a%20mutating%20function,types%20like%20classes%20and%20actors.\
+\
+One of the ways in which Swift helps us write more robust code is through its concept of\'a0
+\f1\i value types
+\f0\i0 , which limit the way that state can be shared across API boundaries. That\'92s because, when using value types, all mutations are (by default) only performed to local copies of the values that we\'92re working with, and APIs that actually perform mutations have to be clearly marked as\'a0
+\f2\fs22\fsmilli11340 \cb4 mutating
+\f0\fs25\fsmilli12600 \cb3 .\
+In this article, let\'92s explore that keyword, as well as its\'a0
+\f2\fs22\fsmilli11340 \cb4 nonmutating
+\f0\fs25\fsmilli12600 \cb3 \'a0counterpart, and the sort of capabilities that those language features provide.\
+\pard\pardeftab720\sa400\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://www.swiftbysundell.com/articles/mutating-and-nonmutating-swift-contexts/#what-can-a-mutating-function-do"}}{\fldrslt 
+\f3\b\fs36 \cf2 What can a mutating function do?}}
+\f3\b\fs36 \
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f0\b0\fs25\fsmilli12600 \cf2 Essentially, a function that\'92s been marked as\'a0
+\f2\fs22\fsmilli11340 \cb4 mutating
+\f0\fs25\fsmilli12600 \cb3 \'a0can change any property within its enclosing value. The word \'93value\'94 is really key here, since Swift\'92s concept of structured mutations only applies to value types, not to reference types like classes and actors.\
+For example, the following\'a0
+\f2\fs22\fsmilli11340 \cb4 Meeting
+\f0\fs25\fsmilli12600 \cb3 \'a0type\'92s\'a0
+\f2\fs22\fsmilli11340 \cb4 cancel
+\f0\fs25\fsmilli12600 \cb3 \'a0method is mutating, since it modifies its enclosing type\'92s\'a0
+\f2\fs22\fsmilli11340 \cb4 state
+\f0\fs25\fsmilli12600 \cb3 \'a0and\'a0
+\f2\fs22\fsmilli11340 \cb4 reminderDate
+\f0\fs25\fsmilli12600 \cb3 \'a0properties:\
+\pard\pardeftab720\sl446\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \strokec5 struct\cf7 \strokec7  Meeting \{\
+    \cf5 \strokec5 var\cf7 \strokec7  name: \cf8 \strokec8 String\cf7 \strokec7 \
+    \cf5 \strokec5 var\cf7 \strokec7  state: \cf8 \strokec8 MeetingState\cf7 \strokec7 \
+    \cf5 \strokec5 var\cf7 \strokec7  reminderDate: \cf8 \strokec8 Date\cf7 \strokec7 ?\
+    ...\
+\
+    \cf5 \cb9 \strokec5 mutating\cf7 \cb6 \strokec7  \cf5 \strokec5 func\cf7 \strokec7  cancel(withMessage message: \cf8 \strokec8 String\cf7 \strokec7 ) \{\
+        state = .\cf10 \strokec10 cancelled\cf7 \strokec7 (message: message)\
+        reminderDate = \cf5 \strokec5 nil\cf7 \strokec7 \
+    \}\
+\}\
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f0\fs25\fsmilli12600 \cf2 \cb3 \strokec2 Besides modifying properties, mutating contexts can also assign a brand new value to\'a0
+\f2\fs22\fsmilli11340 \cb4 self
+\f0\fs25\fsmilli12600 \cb3 , which can be really useful when adding a mutating method to an enum (which can\'92t contain any stored instance properties). For example, here we\'92re creating an API for making it easy to appending one\'a0
+\f2\fs22\fsmilli11340 \cb4 Operation
+\f0\fs25\fsmilli12600 \cb3 \'a0to another:\
+\pard\pardeftab720\sl446\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \strokec5 enum\cf7 \strokec7  Operation \{\
+    \cf5 \strokec5 case\cf7 \strokec7  add(\cf8 \strokec8 Item\cf7 \strokec7 )\
+    \cf5 \strokec5 case\cf7 \strokec7  remove(\cf8 \strokec8 Item\cf7 \strokec7 )\
+    \cf5 \strokec5 case\cf7 \strokec7  update(\cf8 \strokec8 Item\cf7 \strokec7 )\
+    \cf5 \strokec5 case\cf7 \strokec7  group([\cf8 \strokec8 Operation\cf7 \strokec7 ])\
+\}\
+\
+\cf5 \strokec5 extension\cf7 \strokec7  \cf8 \strokec8 Operation\cf7 \strokec7  \{\
+    \cf5 \strokec5 mutating func\cf7 \strokec7  append(\cf5 \strokec5 _\cf7 \strokec7  operation: \cf8 \strokec8 Operation\cf7 \strokec7 ) \{\
+        \cf5 \cb9 \strokec5 self\cf7 \strokec7  = .\cf10 \strokec10 group\cf7 \strokec7 ([\cf5 \strokec5 self\cf7 \strokec7 , operation])\cb6 \
+    \}\
+\}\
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f0\fs25\fsmilli12600 \cf2 \cb3 \strokec2 The above technique also works for other value types, such as structs, which can be really useful if we ever want to reset a value back to its default set of properties, or if we want to mutate a more complex value as a whole \'97 for example like this:\
+\pard\pardeftab720\sl446\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \strokec5 struct\cf7 \strokec7  Canvas \{\
+    \cf5 \strokec5 var\cf7 \strokec7  backgroundColor: \cf8 \strokec8 Color\cf7 \strokec7 ?\
+    \cf5 \strokec5 var\cf7 \strokec7  foregroundColor: \cf8 \strokec8 Color\cf7 \strokec7 ?\
+    \cf5 \strokec5 var\cf7 \strokec7  shapes = [\cf8 \strokec8 Shape\cf7 \strokec7 ]()\
+    \cf5 \strokec5 var\cf7 \strokec7  images = [\cf8 \strokec8 Image\cf7 \strokec7 ]()\
+\
+    \cf5 \strokec5 mutating func\cf7 \strokec7  reset() \{\
+        \cf5 \cb9 \strokec5 self\cf7 \strokec7  = \cf8 \strokec8 Canvas\cf7 \strokec7 ()\cb6 \
+    \}\
+\}\
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f0\fs25\fsmilli12600 \cf2 \cb3 \strokec2 The fact that we can assign a brand new value to\'a0
+\f2\fs22\fsmilli11340 \cb4 self
+\f0\fs25\fsmilli12600 \cb3 \'a0within a mutating function might initially seem a bit strange, but we have to remember that Swift structs are really just values \'97 so just like how we can replace an\'a0
+\f2\fs22\fsmilli11340 \cb4 Int
+\f0\fs25\fsmilli12600 \cb3 \'a0value by assigning a new number to it, we can do the same thing with any other struct (or enum) as well.\
+\pard\pardeftab720\sa400\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://www.swiftbysundell.com/articles/mutating-and-nonmutating-swift-contexts/#mutating-protocol-requirements"}}{\fldrslt 
+\f3\b\fs36 \cf2 Mutating protocol requirements}}
+\f3\b\fs36 \
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f0\b0\fs25\fsmilli12600 \cf2 Although the concept of separating mutating and non-mutating APIs is something that\'92s unique to value types, we can still make a\'a0
+\f2\fs22\fsmilli11340 \cb4 mutating
+\f0\fs25\fsmilli12600 \cb3 \'a0function a part of a protocol as well \'97 even if that protocol might end up being adopted by a reference type, such as a class. Classes can simply omit the\'a0
+\f2\fs22\fsmilli11340 \cb4 mutating
+\f0\fs25\fsmilli12600 \cb3 \'a0keyword when conforming to such a protocol, since they are inherently mutable.\
+What\'92s very interesting, though, is that if we extend a protocol with a default implementation of a mutating function, then we could implement things like the above\'a0
+\f2\fs22\fsmilli11340 \cb4 reset
+\f0\fs25\fsmilli12600 \cb3 \'a0API without actually knowing what type of value that we\'92re resetting \'97 like this:\
+\pard\pardeftab720\sl446\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \strokec5 protocol\cf7 \strokec7  Resettable \{\
+    \cf5 \strokec5 init\cf7 \strokec7 ()\
+    \cf5 \cb9 \strokec5 mutating\cf7 \cb6 \strokec7  \cf5 \strokec5 func\cf7 \strokec7  reset()\
+\}\
+\
+\cf5 \strokec5 extension\cf7 \strokec7  \cf8 \strokec8 Resettable\cf7 \strokec7  \{\
+    \cf5 \strokec5 mutating func\cf7 \strokec7  reset() \{\
+        \cf5 \cb9 \strokec5 self\cf7 \strokec7  = \cf8 \strokec8 Self\cf7 \strokec7 ()\cb6 \
+    \}\
+\}\
+\
+\cf5 \strokec5 struct\cf7 \strokec7  Canvas: \cf8 \cb9 \strokec8 Resettable\cf7 \cb6 \strokec7  \{\
+    \cf5 \strokec5 var\cf7 \strokec7  backgroundColor: \cf8 \strokec8 Color\cf7 \strokec7 ?\
+    \cf5 \strokec5 var\cf7 \strokec7  foregroundColor: \cf8 \strokec8 Color\cf7 \strokec7 ?\
+    \cf5 \strokec5 var\cf7 \strokec7  shapes = [\cf8 \strokec8 Shape\cf7 \strokec7 ]()\
+    \cf5 \strokec5 var\cf7 \strokec7  images = [\cf8 \strokec8 Image\cf7 \strokec7 ]()\
+\}\
+\pard\pardeftab720\sa400\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://www.swiftbysundell.com/articles/mutating-and-nonmutating-swift-contexts/#performing-mutations-within-initializers"}}{\fldrslt 
+\f3\b\fs36 \cf2 \cb3 \strokec2 Performing mutations within initializers}}
+\f3\b\fs36 \cf2 \cb3 \strokec2 \
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f0\b0\fs25\fsmilli12600 \cf2 While functions always need to be explicitly marked as mutating whenever we want to modify a value type\'92s internal state (whether that\'92s a property, or the entire value itself), initializers are always mutating by default. That means that, besides assigning initial values to a type\'92s properties, an initializer can also call mutating methods to perform its work (as long as\'a0
+\f2\fs22\fsmilli11340 \cb4 self
+\f0\fs25\fsmilli12600 \cb3 \'a0has been fully initialized beforehand).\
+For example, the following\'a0
+\f2\fs22\fsmilli11340 \cb4 ProductGroup
+\f0\fs25\fsmilli12600 \cb3 \'a0calls its own\'a0
+\f2\fs22\fsmilli11340 \cb4 add
+\f0\fs25\fsmilli12600 \cb3 \'a0method in order to add all of the products that were passed into its initializer \'97 which makes it possible for us to use a single code path for that logic, regardless of whether it\'92s being run as part of the initialization process or not:\
+\pard\pardeftab720\sl446\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \strokec5 struct\cf7 \strokec7  ProductGroup \{\
+    \cf5 \strokec5 var\cf7 \strokec7  name: \cf8 \strokec8 String\cf7 \strokec7 \
+    \cf5 \strokec5 private(set) var\cf7 \strokec7  products = [\cf8 \strokec8 Product\cf7 \strokec7 ]()\
+    \cf5 \strokec5 private(set) var\cf7 \strokec7  totalPrice = \cf11 \strokec11 0\cf7 \strokec7 \
+    \
+    \cf5 \strokec5 init\cf7 \strokec7 (name: \cf8 \strokec8 String\cf7 \strokec7 , products: [\cf8 \strokec8 Product\cf7 \strokec7 ]) \{\
+        \cf5 \strokec5 self\cf7 \strokec7 .\cf12 \strokec12 name\cf7 \strokec7  = name\
+        products.\cf10 \strokec10 forEach\cf7 \strokec7  \{ \cf10 \cb9 \strokec10 add\cf7 \strokec7 ($0)\cb6  \}\
+    \}\
+\
+    \cf5 \strokec5 mutating func\cf7 \strokec7  add(\cf5 \strokec5 _\cf7 \strokec7  product: \cf8 \strokec8 Product\cf7 \strokec7 ) \{\
+        products.\cf10 \strokec10 append\cf7 \strokec7 (product)\
+        totalPrice += product.\cf12 \strokec12 price\cf7 \strokec7 \
+    \}\
+\}\
+}

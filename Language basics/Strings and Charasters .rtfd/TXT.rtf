@@ -1,0 +1,118 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 AppleColorEmoji;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww20900\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Strings and Charasters \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\partightenfactor0
+\cf0 String Mutability:- \
+\
+You indicate whether a particular\'a0String\'a0can be modified (or\'a0mutated) by assigning it to a variable (in which case it can be modified), or to a constant (in which case it can\'92t be modified):\
+\
+var variableString = "Horse"\
+variableString += " and carriage"\
+// variableString is now "Horse and carriage"\
+\
+let constantString = "Highlander"\
+constantString += " and another Highlander"\
+// this reports a compile-time error - a constant string cannot be modified.\
+\
+Note\
+This approach is different from string mutation in Objective-C and Cocoa, where you choose between two classes (NSString\'a0and\'a0NSMutableString) to indicate whether a string can be mutated.\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\
+You can access the individual Character values for a String by iterating over the string with a for-in loop:\
+\
+for character in "Dog!
+\f1 \uc0\u55357 \u56374 
+\f0 " \{\
+    print(character)\
+\}\
+// D\
+// o\
+// g\
+// !\
+// 
+\f1 \uc0\u55357 \u56374 
+\f0 \
+\
+\
+Alternatively, you can create a stand-alone Character constant or variable from a single-character string literal by providing a Character type annotation:\
+\
+let exclamationMark: Character = "!"\
+String values can be constructed by passing an array of Character values as an argument to its initializer:\
+\
+let catCharacters: [Character] = ["C", "a", "t", "!", "
+\f1 \uc0\u55357 \u56369 
+\f0 "]\
+let catString = String(catCharacters)\
+print(catString)\
+\
+\
+Note\
+\
+You can\'92t append a String or Character to an existing Character variable, because a Character value must contain a single character only.\
+\
+var strWithChar = "ass"\
+var exclamationMark: Character = Character(String("a"))\
+strWithChar.append(exclamationMark)\
+var ss = String(exclamationMark)\
+ss.append(strWithChar)// Gets compiled.but exclamationMark.append(strWithChar) won't compile.\
+\
+\
+Note\
+\
+You can use the startIndex and endIndex properties and the index(before:), index(after:), and index(_:offsetBy:) methods on any type that conforms to the Collection protocol. This includes String, as shown here, as well as collection types such as Array, Dictionary, and Set.\
+\
+Itearting On String using Index:-\
+\
+func iterateOnChar(_ str: String) \{\
+var startIndex = str.startIndex\
+var endIndex = str.endIndex\
+\
+while startIndex < endIndex \{\
+    endIndex = str.index(before: endIndex)  // Note:- endIndex is at start points to index after last index, hence need to iterate back to fetch actual last character here.\
+    print("char at index \\(str[startIndex])  char at end Index \\(str[endIndex])")\
+    startIndex = str.index(after: startIndex)\
+\}\
+\}\
+iterateOnChar("abc")\
+\
+Inserting and Removing:- \
+\
+var welcome = "hello"\
+welcome.insert("!", at: welcome.endIndex)\
+// welcome now equals "hello!"\
+\
+Note\
+\
+You can use the insert(_:at:), insert(contentsOf:at:), remove(at:), and removeSubrange(_:) methods on any type that conforms to the RangeReplaceableCollection protocol. This includes String, as shown here, as well as collection types such as Array, Dictionary, and Set.\
+\
+\
+Substrings:- \
+\
+let greeting = "Hello, world!"\
+let index = greeting.firstIndex(of: ",") ?? greeting.endIndex\
+let beginning = greeting[..<index]\
+// beginning is "Hello"\
+\
+// Convert the result to a String for long-term storage.\
+let newString = String(beginning)\
+\
+Here, \
+\
+Like strings, each substring has a region of memory where the characters that make up the substring are stored. The difference between strings and substrings is that, as a performance optimization, a substring can reuse part of the memory that\'92s used to store the original string, or part of the memory that\'92s used to store another substring. (Strings have a similar optimization, but if two strings share memory, they\'92re equal.) This performance optimization means you don\'92t have to pay the performance cost of copying memory until you modify either the string or substring. As mentioned above, substrings aren\'92t suitable for long-term storage \'97 because they reuse the storage of the original string, the entire original string must be kept in memory as long as any of its substrings are being used.\
+\
+In the example above, greeting is a string, which means it has a region of memory where the characters that make up the string are stored. Because beginning is a substring of greeting, it reuses the memory that greeting uses. In contrast, newString is a string \'97 when it\'92s created from the substring, it has its own storage. The figure below shows these relationships:\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 {{\NeXTGraphic stringSubstring_dark@2x.png \width15280 \height11840 \appleattachmentpadding0 \appleembedtype0 \appleaqc
+}¬}\
+\
+\
+String related questions:- \
+}

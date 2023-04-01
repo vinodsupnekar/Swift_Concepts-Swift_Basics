@@ -1,0 +1,115 @@
+Protocols
+
+Protocols that can only be implemented by classes:- 
+
+protocol UIKitLocalizable: AnyObject, Localizable {
+  func change(to language: Language)
+}
+
+
+Protocols used by Class or subclasses of a Class:- 
+
+protocol LocalizableViewController where Self: UIViewController {
+  func showLocalizedAlert(text: String)
+}
+Here, your protocol can be used by only UIViewController or subclasses thereof.
+
+
+
+*** Behind the scenes of protocols
+
+Static and dynamic dispatch:- What happens is that, at runtime, when Swift finds a function name, it jumps to the address of that function and starts executing the code. But jumping to a function’s address is not always straightforward.
+
+
+Static dispatch :- is fairly straightforward: It happens when you know for sure that a function will never change. Static dispatch is used, among other reasons, for global functions and methods declared in structs as well as methods on final classes.
+
+Dynamic Dispatch:- 
+A method called on a non-final class instance can be declared in multiple possible places.
+It can be declared inside the class, any of its parent classes, an extension or even a protocol extension.
+This means the compiler can’t know ahead of time what the exact address of a function will be. Instead, it uses something called the witness table (sometimes also called the v-table or the virtual table).
+
+- As the compiler goes through your code, it will create a table for each class. This table will have two columns: one for an offset in the table and one for the function at that offset
+
+-Each function in the class is stored in the table, which is stored in your working memory. A subclass will get a copy of its parent’s table and then replace the rows of the method it wants to override. Now that a witness table is built, Swift can use the table at runtime. When it encounters a method call, Swift knows which offset in the table corresponds to that method.
+
+- This allows dynamic changing of the implementation of a method with the same name, allowing features like inheritance, polymorphism and even protocols. But these features come at a cost. Calling functions from table rows adds a constant overhead for each function call. It also prevents inlining and other compiler optimizations, making dynamic dispatch slower than static dispatch.
+
+
+Dispatch in protocols:- 
+
+-Every type that implements a protocol gets its own protocol witness table. The table has two columns again, one with the function and the other with the offset of that function.
+- Each member of the protocol (the methods and variables declared as the protocol requirements) has its own row in the table.
+
+-This table is then stored together with each instance that implements a protocol. Swift can then, at runtime, look up the correct function in the protocol witness table and call it. 
+
+-If you’re using a class instance, Swift can look the function up in both the class and the protocol witness table, dynamically finding the correct implementation.
+
+
+
+Dealing with Protocol extensions:- 
+Example:- 
+protocol Greetable {
+  func greet() -> String
+}
+
+extension Greetable {
+  func greet() -> String {
+    return "Hello"
+  }
+}
+
+Next, create a struct implementing the protocol:
+
+struct GermanGreeter: Greetable {
+}
+
+Then, make an instance of your new struct and call its protocol method:
+
+let greeter = GermanGreeter()
+print(greeter.greet())
+
+As expected, because GermanGreeter doesn’t implement its own greet method, the line above prints out “Hello”. The way this works is that the default greet implementation is copied to every type that conforms to the protocol and added to their protocol witness table.
+
+*** Note that the protocol itself doesn’t have a table. Only concrete types do.
+
+Your greeting is obviously wrong. Translate it to German by implementing the method inside GermanGreeter:
+
+func greet() -> String {
+  return "Hallo"
+}
+
+
+
+One letter is all it takes to make it German. If you run the code again, it’ll print “Hallo”. This happens because your new implementation replaced the extension method in the protocol witness table. The same thing happens when you override a method in a class.
+
+So far, everything works as expected, right? Now, try to create something unexpected. Add a new method in the protocol extension:
+
+func leave() -> String {
+  return "Goodbye"
+}
+
+This function lives inside the protocol extension, but it’s not declared as a requirement of the protocol. However, every type implementing the protocol still has access to the method. Verify this by calling the new method:
+
+print(greeter.leave())
+
+As expected, this outputs “Goodbye”. Translate this again by adding a new method in GermanGreeter:
+
+func leave() -> String {
+  return "Tschüss"
+}
+
+If you run the code again, it works just like before: The new method gets called and the output is “Tschüss”. However, if you change the declaration of greeter to use the protocol:
+
+let greeter: Greetable = GermanGreeter()
+
+greet still outputs “Hallo”, but leave is now in English and outputs Goodbye!?
+
+Swift seems to entirely bypass the function you declared in the struct and calls the function from the protocol extension. Although this is unexpected, there’s a clear reason why it happens. Your first hint is that the called function depends on the variable’s declared type. This means polymorphism doesn’t work. Earlier, I mentioned that dynamic dispatch enables polymorphism, so leave must be called using static dispatch.
+
+Indeed, extension methods rely entirely on static dispatch. There is no table involved in calling leave — Swift calls it statically on the variable’s type. greet works as expected because by adding it to the protocol’s requirements, you forced Swift to create a protocol witness table entry for the method, enabling dynamic dispatch.
+
+This is important because adding extension methods to protocols is quite common in Swift. It’s a great way to add additional reusable functionality to your structs and classes. But always keep in mind that if you ever want to override the extension method, you need to add it as a protocol requirement. Otherwise, you might end up with very unexpected results.
+ 
+
+
+Protocols and the type system:-

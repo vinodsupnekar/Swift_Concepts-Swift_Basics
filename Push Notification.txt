@@ -1,0 +1,414 @@
+Push Notification:-
+
+1.Enabling the Push Notification Service
+
+2.
+First, you must get the user’s permission to show notifications. Then, you can register the device to receive remote (push) notifications. If all goes well, the system will then provide you with a device token, which you can think of as an “address” to this device.
+
+Add the following near the end of application(_:didFinishLaunchingWithOptions:), just before the return:
+
+registerForPushNotifications()
+
+Calling registerForPushNotifications() here ensures the app will attempt to register for push notifications any time it’s launched.
+
+func registerForPushNotifications() {
+  //1
+  UNUserNotificationCenter.current() 
+    //2
+    .requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+      //3
+      print("Permission granted: \(granted)")
+
+    guard granted else { return }
+    self?.getNotificationSettings()
+
+    }
+}
+
+
+
+
+func getNotificationSettings() {
+  UNUserNotificationCenter.current().getNotificationSettings { settings in
+    print("Notification settings: \(settings)")
+   guard settings.authorizationStatus == .authorized else { return }
+	DispatchQueue.main.async {
+	  UIApplication.shared.registerForRemoteNotifications()
+ 	}
+
+  }
+}
+
+
+
+//1.UNUserNotificationCenter handles all notification-related activities in the app, including push notifications.
+
+//2 You invoke requestAuthorization(options:completionHandler:) to (you guessed it) request authorization to show notifications. The passed options indicate the types of notifications you want your app to use — here you’re requesting alert, sound and badge.
+
+//3 .The completion handler receives a Bool that indicates whether authorization was successful. In this case, you simply print the result.
+
+Note: The options you pass to requestAuthorization(options:completionHandler:) can include any combination of UNAuthorizationOptions:
+.badge: Display a number on the corner of the app’s icon.
+.sound: Play a sound.
+.alert: Display a text notification.
+.carPlay: Display notifications in CarPlay.
+.provisional: Post non-interrupting notifications. The user won’t get a request for permission if you use only this option, but your notifications will only show silently in the Notification Center.
+.providesAppNotificationSettings: Indicate that the app has its own UI for notification settings.
+.criticalAlert: Ignore the mute switch and Do Not Disturb. You’ll need a special entitlement from Apple to use this option, because it’s meant only for very special use cases.
+
+
+
+Now:- appdelegate method  to  receive device token:-
+
+
+func application(
+  _ application: UIApplication,
+  didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+) {
+  let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+  let token = tokenParts.joined()
+  print("Device Token: \(token)")
+}
+
+This method is called by iOS whenever a call to registerForRemoteNotifications() succeeds. 
+This token is sent to server for sending Push notifications.
+
+
+If failed to get token :- 
+func application(
+  _ application: UIApplication,
+  didFailToRegisterForRemoteNotificationsWithError error: Error
+) {
+  print("Failed to register: \(error)")
+}
+
+
+
+**** Sending a Simulated (simulator )Push Notification
+
+Use a text editor to create a file called first.apn, which you’ll pass to Xcode’s simctl utility. Paste in the following JSON text and save the file.
+{
+  "aps": {
+    "alert": "Breaking News!",
+    "sound": "default",
+     }
+ "link_url": "https://raywenderlich.com"
+
+}
+
+
+xcrun simctl push device_identifier bundle_identifier first.apn.
+
+
+
+Looking at a Basic Push Notification
+:-  
+Payload size - 4KB 
+
+{
+  "aps": {
+    "alert": "Breaking News!",
+    "sound": "default",
+  }
+    "link_url": "https://raywenderlich.com"
+}
+
+
+There are eight built-in keys you can add to the aps dictionary (see the official Payload Key Reference for more information):
+
+alert: This can be a string, as in the previous example, or a dictionary. As a dictionary, it can localize the text or change other aspects of the notification.
+
+badge: This is a number that will display in the corner of the app icon. You can remove the badge by setting this to 0.
+sound: Name of a custom notification sound’s file located in the app. These must be shorter than 30 seconds.
+thread-id: Use this key to group notifications.
+
+category: This defines the category of the notification, which is used to show custom actions on the notification. You’ll explore this shortly.
+
+content-available: By setting this key to 1, the push notification becomes silent. You’ll learn about this in the Silent Push Notifications section below.
+
+mutable-content: By setting this key to 1, your app can modify the notification before displaying it.
+target-content-id: This is the identifier of the window brought forward.
+
+
+
+Handling Push Notifications:- 
+
+When your app receives a push notification, iOS calls a method in UIApplicationDelegate.
+
+You’ll need to handle a notification differently depending on what state your app is in when the notification is received:
+
+If your app wasn’t running and the user launches it by tapping the push notification, iOS passes the notification to your app in the launchOptions of application(_:didFinishLaunchingWithOptions:).
+
+If your app was running either in the foreground or the background, the system notifies your app by calling application(_:didReceiveRemoteNotification:fetchCompletionHandler:). 
+
+When the user opens the app by tapping the push notification, iOS may call this method again, so you can update the UI and display relevant information.
+
+
+1st :- func application(_:didFinishLaunchingWithOptions:) {
+	// Check if launched from notification
+let notificationOption = launchOptions?[.remoteNotification]
+
+// 1
+if 
+  let notification = notificationOption as? [String: AnyObject],
+  let aps = notification["aps"] as? [String: AnyObject] {
+  // 2
+  NewsItem.makeNewsItem(aps)
+  
+  // 3
+  (window?.rootViewController as? UITabBarController)?.selectedIndex = 1
+}
+	
+}
+
+
+2nd:- func application(
+  _ application: UIApplication,
+  didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+  guard let aps = userInfo["aps"] as? [String: AnyObject] else {
+    completionHandler(.failed)
+    return
+  }
+  NewsItem.makeNewsItem(aps)
+}
+
+
+
+Working With Actionable Notifications:- 
+Your app can define actionable notifications when you register for notifications by using categories. Each category of notification can have a few preset custom actions.
+
+
+
+func registerForPushNotifications() {
+  //1
+  UNUserNotificationCenter.current() 
+    //2
+    .requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+      //3
+      print("Permission granted: \(granted)")
+
+    guard granted else { return }
+
+
+	// 1
+	let viewAction = UNNotificationAction(
+ 	 identifier: Identifiers.viewAction,
+ 	 title: "View",
+ 	 options: [.foreground])
+
+	// 2
+	let newsCategory = UNNotificationCategory(
+	  identifier: Identifiers.newsCategory,
+ 	 actions: [viewAction],
+ 	 intentIdentifiers: [],
+ 	 options: [])
+
+	// 3
+	UNUserNotificationCenter.current().setNotificationCategories([newsCategory])
+
+
+    self?.getNotificationSettings() // which call  UIApplication.shared.registerForRemoteNotifications()
+
+    }
+}
+
+Going through this, step-by-step:
+
+-Create a new notification action, with the title View on the button, that opens the app in the foreground when triggered. The action has a distinct identifier, which iOS uses to differentiate between other actions on the same notification.
+-Define the news category, which will contain the view action. This also has a distinct identifier that your payload will need to contain to specify that the push notification belongs to this category.
+-Register the new actionable notification by calling setNotificationCategories.
+
+
+*** Handling Notification Actions:- 
+
+Whenever a notification action gets triggered, UNUserNotificationCenter informs its delegate. Back in AppDelegate.swift, add the following class extension to the bottom of the file:
+
+// MARK: - UNUserNotificationCenterDelegate
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void
+  ) {
+    // 1
+    let userInfo = response.notification.request.content.userInfo
+    
+    // 2
+    if 
+      let aps = userInfo["aps"] as? [String: AnyObject],
+      let newsItem = NewsItem.makeNewsItem(aps) {
+      (window?.rootViewController as? UITabBarController)?.selectedIndex = 1
+      
+      // 3
+      if response.actionIdentifier == Identifiers.viewAction,
+        let url = URL(string: newsItem.link) {
+        let safari = SFSafariViewController(url: url)
+        window?.rootViewController?
+          .present(safari, animated: true, completion: nil)
+      }
+    }
+    
+    // 4
+    completionHandler()
+  }
+}
+
+
+This is the callback you get when the app opens because of a custom action. It might look like there’s a lot going on, but there’s not much new here:
+
+1.Get the userInfo dictionary.
+2.Create a NewsItem from the aps dictionary and navigate to the News tab.
+3.Check the actionIdentifier. If it is the “View” action and the link is a valid URL, it displays the link in an SFSafariViewController.
+4.Call the completion handler the system passes to you.
+
+
+Sending to a Real Device :- 
+
+
+
+*** Using Silent Push Notifications:- 
+
+Silent push notifications can wake your app up silently to perform some tasks in the background. WenderCast can use this feature to quietly refresh the podcast list.
+
+With a proper server component this can be very efficient. Your app won’t need to constantly poll for data. You can send it a silent push notification whenever new data is available.
+
+To get started, select the WenderCast target again. Now click the Signing & Capabilities tab and add the Background Modes capability. Then check the Remote notifications option:
+
+Check the remote notifications option for background modes entitlement
+
+Now, your app will wake up in the background when it receives one of these push notifications.
+
+In AppDelegate.swift, find application(_:didReceiveRemoteNotification:fetchCompletionHandler:). Replace the call to NewsItem.makeNewsItem() with the following:
+
+// 1
+if aps["content-available"] as? Int == 1 {
+  let podcastStore = PodcastStore.sharedStore
+  // 2
+  podcastStore.refreshItems { didLoadNewItems in
+    // 3
+    completionHandler(didLoadNewItems ? .newData : .noData)
+  }
+} else {
+  // 4
+  NewsItem.makeNewsItem(aps)
+  completionHandler(.newData)
+}
+
+Going over the code:
+
+You check to see if content-available is set to 1. If so, this is a silent notification.
+You refresh the podcast list, which is an asynchronous network call.
+When the refresh is complete, call the completion handler to let the system know whether the app loaded any new data.
+If it isn’t a silent notification, then it is a news item, so make a news item.
+Be sure to call the completion handler with the honest result. The system measures the battery consumption and time that your app uses in the background and may throttle your app if needed.
+
+That’s all there is to it. To test it, build and run, foreground the app and push the following payload via the PushNotifications utility:
+
+{
+  "aps": {
+    "content-available": 1
+  }
+}
+
+If all goes well, nothing should happen, unless a new podcast was just added to the remote database. To confirm the code ran as expected, set a breakpoint in application(_:didReceiveRemoteNotification:fetchCompletionHandler:) and step through it after the notification is sent.
+
+
+Modifying Push Content:- 
+
+Apple has created a way to modify push content prior to delivery with service extensions. Service extensions allow you to intercept the push content coming in from the APNS, modify it and then deliver the modified payload to the user.
+
+Introducing Service Extensions:- 
+A service extension gets a limited execution time to perform some logic on the incoming push payload. Some of the things you can do to modify and augment the push payload are:
+
+Update the title, subtitle or body of the push.
+Add a media attachment to the push.
+
+
+Adding a Service Extension:- 
+
+
+*** Push Notification keys:- 
+
+Grouping Notifications Keys:-
+thread-id:- 
+
+From iOS 12 :- thread-id for grouping Notification of same identifiers in Notification centre.
+In a game app, you might use this feature so that all notifications related to a specific game session are grouped together and not merged in with all other game sessions. If you leave this key out, iOS will default to grouping everything from your app together into one group.
+
+
+*** Localizing Notifications
+There are two options to work around this issue:
+
+1. Call Locale.preferredLanguages at registration and send the list of languages your user speaks to your server.
+2. Store localized versions of all your notifications in your app bundle.
+
+There are pros and cons to each approach, and it really depends on the quantity and type of notifications you’ll be sending. If you keep everything on the server, and send each person the proper translation, you’ll never have to push a new version of your app when you add new notification messages.
+
+If you decide to handle localization on the app side, instead of passing along title and body keys, you can use title-loc-key and title-loc-args for the title, and loc-key and loc-args for the body.
+
+For example, your payload might end up looking like this:
+
+{
+  "aps": {
+    "alert": {
+      "title-loc-key": "FOOD_ORDERED",
+      "loc-key": "FOOD_PICKUP_TIME",
+      "loc-args": ["2022-05-02T19:32:41Z"]
+    }
+  }
+}
+
+
+When iOS gets the notification, it’ll look in the proper Localizable.strings file inside your app to automatically get the correct translation, and then substitute the date and time into the proper location. This might result in an English language speaker seeing:
+
+You can pick up your order at 5:32 p.m.
+
+
+Adding Custom Data:- 
+Everything outside of the aps key is for your personal use.
+E.g. 
+{
+  "aps": {
+    "alert": {
+      "title": "Save The Princess!"
+    }
+  },
+  "coords": {
+    "latitude": 37.33182,
+    "longitude": -122.03118
+  }
+}
+
+
+**** HTTP Header fields in Push Payload:- 
+
+apns-collapse-id:- 
+Apple gives you the ability to collapse multiple notifications down to one when a newer notification supersedes an older one.
+
+When to use it:- For example, if you’re using a notification to alert users as to how many people have completed the scavenger hunt so far, you really only need to know the current total. While you’re still diligently searching for that elusive item, three other people might have completed the game. Each time another person finds all their items, a push notification is sent to you. When you get the time to check on the status, you really don’t want to see three separate notifications saying somebody has finished. Wouldn’t you rather see a single notification saying three people are done? That’s exactly what this header field is for.
+
+*** Adding Priority
+The third header you’re likely to use is apns-priority. The default, if not specified, is 10. Specifying a priority of 10 will send the notification immediately, but is only appropriate for notifications which include an alert, sound or badge update.
+
+Any notification which includes the content-available key must specify a priority of 5. Notifications with a priority of 5 might be batched and delivered together at a later point in time.
+
+Note: Apple’s documentation states that it is an error to specify a priority of 10 for a notification whose payload contains the content-available key.
+
+
+Key Points:- 
+
+Key Points
+In this chapter, you covered the basics of the remote notification payload. Some key things to remember:
+
+- Prefer to use a dictionary instead of a string for the alert key.
+
+ - Consider how you’re going to deal with localization issues: server-side vs. client-side.
+
+ - Utilize the apns-collapse-id HTTP header field when “overriding” or “updating” your notification is more appropriate than sending an additional notification.
+
+ - Place all of your custom data outside of the aps key to future-proof your custom keys.
+
+ - Think about whether grouping and/or collapsing your notifications makes sense.
+ 
+ - Ensure you are providing a value for the the new apns-push-type HTTP header.
