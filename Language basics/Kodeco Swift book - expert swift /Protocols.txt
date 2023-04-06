@@ -1,0 +1,278 @@
+Protocols:- 
+
+*** Equality:- 
+- By default , You can’t apply the == operator to the class you just defined. 
+- Class needs to extend Equatble protocol and implement static == function.
+
+For Structs and Enums:- 
+   Note: The compiler will often automatically write (or codegen) the function == for you. This automatic code generation happens for structures and enumerations that conform to Equatable when all stored properties and associated values are also Equatable.
+
+
+*** Comparable:- 
+
+- A subprotocol of Equatable is Comparable: Hence to implement Comparable , we need to first conform to Equatable(i.e implement == ).
+
+protocol Comparable: Equatable {
+  static func <(lhs: Self, rhs: Self) -> Bool
+  static func <=(lhs: Self, rhs: Self) -> Bool
+  static func >=(lhs: Self, rhs: Self) -> Bool
+  static func >(lhs: Self, rhs: Self) -> Bool
+}
+
+- In addition to the equality operator ==, Comparable requires you to overload the comparison operators <, <=, > and >= for your type. 
+- In practice, you’ll usually only provide <, as the standard library can implement <=, > and >= for you, using your implementations of == and <.
+
+E.g.
+
+class Record {
+  
+  var wins: Int
+  var losses: Int
+    
+  init(wins: Int, losses: Int) {
+      self.wins = wins
+      self.losses = losses
+  }
+}
+
+let recordA = Record(wins: 10, losses: 5)
+let recordB = Record(wins: 10, losses: 5)
+
+recordA == recordB // Build error! Resolved by following Equatable  extension 
+
+extension Record: Equatable {
+  static func ==(lhs: Record, rhs: Record) -> Bool {
+    lhs.wins == rhs.wins &&
+    lhs.losses == rhs.losses
+  }
+}
+
+
+extension Record: Comparable {
+  static func <(lhs: Record, rhs: Record) -> Bool {
+    if lhs.wins == rhs.wins {
+      return lhs.losses > rhs.losses
+    }
+    return lhs.wins < rhs.wins
+  }
+}
+
+
+*** “Free” functions:- 
+
+While == and < are useful in their own right, the Swift library provides you with many “free” functions and methods for types that conform to Equatable and Comparable.
+
+For any collection you define that contains a Comparable type, such as an Array, you have access to methods such as sort() that are part of the standard library:
+
+
+let teamA = Record(wins: 14, losses: 11)
+let teamB = Record(wins: 23, losses: 8)
+let teamC = Record(wins: 23, losses: 9)
+var leagueRecords = [teamA, teamB, teamC]
+
+leagueRecords.sort()
+// {wins 14, losses 11}
+// {wins 23, losses 9}
+// {wins 23, losses 8}
+leagueRecords.max() // {wins 23, losses 8}
+leagueRecords.min() // {wins 14, losses 11}
+
+Only conformance to Equatable gives you below apis' : -
+
+leagueRecords.starts(with: [teamA, teamC]) // true
+leagueRecords.contains(teamA) // true
+
+
+*** Hashable :- 
+
+- The Hashable protocol, a subprotocol of Equatable,  is required for any type you want to use as a key to a Dictionary.
+
+- As with Equatable, the compiler will code generate Hashable conformance for you automatically, but you will need to do it yourself for reference types such as classes.
+
+
+The only truth is If 2 values are Equal then Their Hash must be Equal
+
+A == B , then  A.hashValue ==  B.hashValue.
+A != B , Then  A.hashValue !=  B.hashValue OR A.hashValue ==  B.hashValue, as we have unlimited Data that that get mapped to limited Int hashValue.
+
+Hence A == B , then  A.hashValue ==  B.hashValue is only truth.
+
+Now as Hash Collision might occur, Equatable helps to differentiate the 2 values which had collision.
+
+
+
+class Student {
+  let email: String
+  let firstName: String
+  let lastName: String
+
+  init(email: String, firstName: String, lastName: String) {
+    self.email = email
+    self.firstName = firstName
+    self.lastName = lastName
+  }
+}
+
+extension Student: Hashable {
+  static func ==(lhs: Student, rhs: Student) -> Bool {
+    lhs.email == rhs.email &&
+    lhs.firstName == rhs.firstName &&
+    lhs.lastName == rhs.lastName
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(email)
+    hasher.combine(firstName)
+    hasher.combine(lastName)
+  }
+}
+
+- You can now use the Student type as the key in a Dictionary:
+
+let john = Student(email: "johnny.appleseed@apple.com",
+                   firstName: "Johnny",
+                   lastName: "Appleseed")
+let lockerMap = [john: "14B"]
+
+
+**** Identifiable-
+  The Identifiable protocol vends a unique id property. Specifically, Identifiable requires only a get property named id whose type must be Hashable.
+
+extension Student: Identifiable {
+  var id: String {
+    email
+  }
+}
+
+
+*** CustomStringConvertible 
+
+The convenient CustomStringConvertible protocol helps you log and debug instances.
+
+When you call print() on an instance such as a Student, Swift prints a vague description:
+
+The CustomStringConvertible protocol has only a description property requirement. This property customizes how the instance appears in print() statements and in the debugger:
+
+protocol CustomStringConvertible {
+  var description: String { get }
+}
+
+E.g extension Student: CustomStringConvertible {
+  var description: String {
+    "\(firstName) \(lastName)"
+  }
+}
+print(john)
+// Johnny Appleseed
+
+
+**** CustomDebugStringConvertible :- 
+It behaves exactly like CustomStringConvertible except it also defines a debugDescription. Use CustomDebugStringConvertible along with debugPrint() to print to the output only in debug configurations.
+
+
+
+*************************
+
+Protocols basics:- 
+
+Protocol define an interface or blueprint that actual concrete types conform to. 
+With a protocol, you define a common set of properties and behaviors that concrete types go and implement
+
+E.g
+
+protocol Vehicle {
+  func accelerate()
+  func stop()
+}
+
+
+Implementation:- 
+
+class Unicycle: Vehicle {
+  var peddling = false
+
+  func accelerate() {
+    peddling = true
+  }
+
+  func stop() {
+    peddling = false
+  }
+}
+
+
+// Another version :- 
+
+
+enum Direction {
+  case left
+  case right
+}
+
+protocol DirectionalVehicle {
+  func accelerate()
+  func stop()
+  func turn(_ direction: Direction)
+  func description() -> String
+}
+
+// Also, methods defined in protocols can’t contain default parameters: 
+
+protocol OptionalDirectionVehicle {
+  // Build error!
+  func turn(_ direction: Direction = .left) 
+}
+
+
+
+******** Properties in protocols :- 
+
+
+protocol VehicleProperties {
+  var weight: Int { get }
+  var name: String { get set }
+}
+
+When defining properties in a protocol, you must explicitly mark them as get or get set,
+
+
+Initializers in protocols:- 
+
+protocol Account {
+  var value: Double { get set }
+  init(initialAmount: Double)
+  init?(transferAccount: Account)
+}
+
+
+Implementation:- 
+
+class BitcoinAccount: Account {
+  var value: Double
+  required init(initialAmount: Double) {
+    value = initialAmount
+  }
+  required init?(transferAccount: Account) {
+    guard transferAccount.value > 0.0 else {
+      return nil
+    }
+    value = transferAccount.value
+  }
+}
+
+var accountType: Account.Type = BitcoinAccount.self
+let account = accountType.init(initialAmount: 30.00)
+let transferAccount = accountType.init(transferAccount: account)!
+
+
+Inheritance:- 
+
+protocol WheeledVehicle: Vehicle {
+  var numberOfWheels: Int { get }
+  var wheelSize: Double { get set }
+}
+
+
+
+
+

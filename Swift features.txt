@@ -1,0 +1,183 @@
+Swift 5 features:- 
+
+1.ABI Stability
+ABI stability is one of the major highlights of Swift 5.0 features. ABI stability stands for Application Binary Interface stability, which is a binary equivalent of an API, an Application Programming Interface.
+
+iOS app developers use various API libraries to write code using Swift for your apps. For example, The UIKit framework provides API to interface with buttons, labels, and view controllers.
+
+With ABI stability, when a user downloads and installs your app, they won’t have to download all the code your app requires. Most of those codes are already present on their iPhone, as part of iOS, its frameworks, and API libraries. Your app will just have to use the binary code already present. ABI stability in Swift 5 will make future apps smaller and easier to build.
+
+
+2. Integer Multiples With “isMultiple(of:)”
+There are a lot of use cases in practical programming when it comes to Swift. One of the most common is checking if a number is divisible by another number (Integer Multiples). As it again requires checking if a number is even or odd, the default approach is to use the remainder operator %.
+
+Swift 5 comes with a new function isMultiple(of:) for checking if a given integer is a multiple of another number. This is one of the best Swift 5 features, that improves the readability of the code and also discoverable by the auto-completion of XCode.
+
+Sample Usage:
+let number = 42
+if number.isMultiple(of: 2) {
+    print("\(number) is even!")
+}    
+
+
+3. The Result Type
+Swift 5 introduces a new type called Result type for iOS app development. This type works with two states of a passed result: success and failure, and due to its high popularity, it’s now available in the Swift standard library.
+
+Result type encapsulates possible return values and errors in one object. It leverages the power of enumerations and SWift 5 helps you write more meaningful code.
+
+Sample Usage:
+
+dataTask(with: url) { (result: Result<Data, Error>) in
+    switch result {
+    case let .success(data):
+        handleResponse(data: data)
+    case let .error(error):
+        handleError(error)
+    }
+}    
+
+4. Filter And Count With “count(where:)”
+You might be already familiar with collection functions like map(_:), reduce(_:) and filter(_:). The problems with the above functions are — they make the code too verbose and wasteful. Though we only want to count, we first need to filter, and this is where ‘count(where:) comes in. This function allows us to filter and count in one function call seamlessly using Swift 5.
+
+
+Sample Usage:
+let scores = [1, 3, 8, 2, 5, 6, 2, 10]
+let count = scores.count(where: { $0 > 5 })
+print(count)
+
+Output = 3
+
+5. Flatten Nested Optionals With “try?”
+Though it’s not wrong to use nested operators, they are confusing and seem unnecessary. Sometimes they need a larger number of operations for even doing a simple task. Swift 5 flatten the nested optional resulting from try? giving them the same behavior as? and optional chaining. This also helps the developer keep code neat and clean. 
+
+Sample Usage:
+if let engine = (try? bike?.getEngine()) as? Engine {
+    // that's it
+}
+
+6. The New “compactMapValues()” Function For Dictionary
+One of the swift 5 features includes “compactMapValues()” Function. The standard Swift library comes with two important functions for arrays and a dictionary.
+
+map(_:) – It applies a function to array items and returns the resulting array.
+
+compactMap(_:) – it discards array items that are nil.
+
+On the other hand, The mapValues(_:) function does the same for dictionaries except it doesn’t discard the nil array items. Swift 5 bring s(_:) function for dictionaries.
+
+It basically combines the compactMap(_:) function of arrays with the mapValues(_:) function of dictionaries for effective mapping and filtering values.
+
+7. Raw Strings
+This is one of the Swift 5 features that allows you to create raw strings. The backlashes and quote marks are interpreted as the literal symbols instead of escapes characters or string terminators. The regular expressions and other user-cases become easier.
+
+To use raw strings, you can put one or more # symbols before the strings:
+
+let rain = #"The "rain" in "Spain" falls mainly on the Spaniards."#
+The hashtag symbols at the start and end of the string are a part of the string delimiter. This way, Swift interprets that the standalone quote marks around “rain” and “Spain” should be treated as into quote marks rather than ending the string.
+
+Similarly, raw strings allow you to use backslashes too:
+
+let keypaths = #"Swift keypaths such as \Person.name hold uninvoked references to properties."#   
+Even here, the backslash is being treated as a literal character in the string, rather than an escape character.
+
+An interesting feature of these raw strings is how you can use the hashtag at the start and end. Even if you want to use it more than once in an unlikely event. Consider this string: My cat said “meow”#goodcat. As there is no gap ahead of the hashtag, Swift will detect “# and understand it as the string terminator. In this situation we need to change our delimiter from #” to ##”, like this:
+
+let str = ##"My cat said "meow"#goodcat"##
+Make sure that the number of hashes at the end matches the number at the start, for the right result.
+
+Raw strings and Swift’s multi-line string system are fully compatible with each other – all you need to do is use #””” to start, then “””# to end, like this:
+
+let multiline = #"""
+The answer to life,
+the universe,
+and everything is \#(answer).
+"""#
+
+
+
+Swift 5.1 :-  
+
+ Property wrappers :-
+-Like the name implies, a property wrapper is essentially a type that wraps a given value in order to attach additional logic to it 
+-can be implemented using either a struct or a class by annotating it with the @propertyWrapper attribute
+
+-Besides that, the only real requirement is that each property wrapper type should contain a stored property called wrappedValue
+
+
+
+Swift 5.5.:-
+https://www.hackingwithswift.com/swift/5.5 
+https://www.avanderlee.com/swift/actors/
+- actors
+
+- lazy now works in local contexts .
+
+- Structured concurrency :- https://www.hackingwithswift.com/swift/5.5/structured-concurrency
+
+- Async/await
+Introduces asynchronous (async) functions into Swift, allowing us to run complex asynchronous code almost is if it were synchronous. This is done in two steps: marking async functions with the new async keyword, then calling them using the await keyword, similar to other languages such as C# and JavaScript.
+
+
+Aync -aWait :- structured concurrency.
+
+import Foundation
+
+E.g
+
+func fetchWeatherHistory(completion: @escaping ([Double]) -> Void) {
+    // Complex networking code here; we'll just send back 100,000 random temperatures
+    DispatchQueue.global().async {
+        let results = (1...100_000).map { _ in Double.random(in: -10...30) }
+        completion(results)
+    }
+}
+
+func calculateAverageTemperature(for records: [Double], completion: @escaping (Double) -> Void) {
+    // Sum our array then divide by the array size
+    DispatchQueue.global().async {
+        let total = records.reduce(0, +)
+        let average = total / Double(records.count)
+        completion(average)
+    }
+}
+
+func upload(result: Double, completion: @escaping (String) -> Void) {
+    // More complex networking code; we'll just send back "OK"
+    DispatchQueue.global().async {
+        completion("OK")
+    }
+}
+
+
+When it comes to using that code, we need to call them one by one in a chain, providing completion closures for each one to continue the chain, like this:
+
+fetchWeatherHistory { records in
+    calculateAverageTemperature(for: records) { average in
+        upload(result: average) { response in
+            print("Server response: \(response)")
+        }
+    }
+}
+
+
+
+func fetchWeatherHistory() async -> [Double] {
+    (1...100_000).map { _ in Double.random(in: -10...30) }
+}
+
+func calculateAverageTemperature(for records: [Double]) async -> Double {
+    let total = records.reduce(0, +)
+    let average = total / Double(records.count)
+    return average
+}
+
+func upload(result: Double) async -> String {
+    "OK"
+}
+That has already removed a lot of the syntax around returning values asynchronously, but at the call site it’s even cleaner:
+
+func processWeather() async {
+    let records = await fetchWeatherHistory()
+    let average = await calculateAverageTemperature(for: records)
+    let response = await upload(result: average)
+    print("Server response: \(response)")
+}

@@ -1,5 +1,6 @@
 
 import Foundation
+import Combine
 
 protocol Greetable {
   func greet() -> String
@@ -255,3 +256,40 @@ print(obj23.hashValue)
 // o/p :- for    hasher.combine(salary) if same salary ==> Hash value will be different.
 
 // o/p :- for    hasher.combine(name) if same salary ==> Hash value will be same.
+
+
+
+// Comparable Protocol:-
+
+/**
+ The Comparable protocol allows use to use the <, >, <=, and >= operators with conforming data types, which in turn means that Swift knows how to sort arrays of those types.
+ 
+ Most of Swift’s built-in types support Comparable out of the box, but if you want your own type to conform to them then you need to implement < – from that Swift can provide default implementations of the other three operators.
+ 
+ */
+
+struct Person: Comparable {
+    var name: String
+
+    static func <(lhs: Person, rhs: Person) -> Bool {
+        return lhs.name < rhs.name
+    }
+}
+
+let taylor = Person(name: "Taylor Swift")
+let justin = Person(name: "Justin Bieber")
+print(taylor < justin)
+
+// o/ p ===> false
+
+protocol Networking {
+  func fetch(_ request: Request) -> AnyPublisher<Data, URLError>
+}
+
+let multiline = #"""
+The answer to life,
+the universe,
+and everything is \#(answer).
+"""#
+
+let keypaths = #"Swift keypaths such as \Person.name hold uninvoked references to properties."#

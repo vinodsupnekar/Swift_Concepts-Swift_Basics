@@ -1,0 +1,38 @@
+
+Properties:- 
+
+*** Stored Properties:- 
+struct Car { 
+ let make: String
+ let color: String 
+} 
+
+The two properties of Car are stored properties, which means they store actual string values for each instance of Car.
+
+
+*** Computed properties:- 
+
+Some properties calculate values rather than store them. In other words, there’s no actual memory allocated for them; instead, they get calculated on-the-fly each time you access them
+
+E.g.
+
+struct TV {
+  var height: Double
+  var width: Double
+  
+  // 1
+  var diagonal: Int {
+    // 2
+    let result = (height * height +
+      width * width).squareRoot().rounded()
+    // 3
+    return Int(result)
+  }
+}
+
+This is called read-only computed property.
+
+Getter and setter :- 
+
+
+

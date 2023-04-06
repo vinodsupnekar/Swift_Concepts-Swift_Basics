@@ -58,7 +58,7 @@ Note: The options you pass to requestAuthorization(options:completionHandler:) c
 
 
 
-Now:- appdelegate method  to  receive device token:-
+Now:- Appdelegate method  to  Receive device token:-
 
 
 func application(

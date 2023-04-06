@@ -1,0 +1,102 @@
+Property Observers :- 
+
+Property observers observe and respond to changes in a property’s value. Property observers are called every time a property’s value is set, even if the new value is the same as the property’s current value.
+You can add property observers in the following places:
+	•	Stored properties that you define 
+	•	Stored properties that you inherit 
+	•	Computed properties that you inherit 
+You have the option to define either or both of these observers on a property:
+	•	willSet is called just before the value is stored. 
+	•	didSet is called immediately after the new value is stored. 
+	•	
+	•	class StepCounter {
+	•	    var totalSteps: Int = 0 {
+	•	        willSet(newTotalSteps) {
+	•	            print("About to set totalSteps to \(newTotalSteps)")
+	•	        }
+	•	        didSet {
+	•	            if totalSteps > oldValue  {
+	•	                print("Added \(totalSteps - oldValue) steps")
+	•	            }
+	•	        }
+	•	    }
+	•	}
+	•	let stepCounter = StepCounter()
+	•	stepCounter.totalSteps = 200
+	•	// About to set totalSteps to 200
+	•	// Added 200 steps
+	•	stepCounter.totalSteps = 360
+	•	// About to set totalSteps to 360
+	•	// Added 160 steps
+	•	stepCounter.totalSteps = 896
+	•	// About to set totalSteps to 896
+	•	// Added 536 steps
+
+-willSet and didSet observers are only available for stored properties. 
+
+-If you want to listen for changes to a computed property, simply add the relevant code to the property’s setter.
+
+-Also, keep in mind that the willSet and didSet observers are not called when a property is set during initialization; they only get called when you assign a new value to a fully initialized instance. 
+
+-That means property observers are only useful for variable properties since constant properties are only set during initialization. Select between var and let accordingly to match your needs.
+
+
+
+**** Limiting a variable
+
+
+You can also use property observers to limit the value of a variable. Say you had a light bulb that could only support a maximum current flowing through its filament.
+
+
+struct LightBulb {
+  static let maxCurrent = 40
+  var current = 0 {
+    didSet {
+      if current > LightBulb.maxCurrent {
+        print("""
+              Current is too high,
+              falling back to previous setting.
+              """)
+        current = oldValue
+      }
+    }
+  }
+}
+
+
+Lazy properties:- 
+
+/If you have a property that might take some time to calculate, you don’t want to slow things down until you need the property. Say hello to the lazy stored property. It is useful for such things as downloading a user’s profile picture or making a serious calculation.
+
+struct Circle {
+    var piFormat = {
+       print("format of pi")
+    }()
+  lazy var pi = {
+    ((4.0 * atan(1.0 / 5.0)) - atan(1.0 / 239.0)) * 4.0
+  }()
+  var radius = 0.0
+  var circumference: Double {
+    mutating get {
+      pi * radius * 2
+    }
+  }
+  init(radius: Double) {
+    self.radius = radius
+  }
+}
+
+//The calculation of pi defers until you need it. Only when you ask for the circumference property is pi calculated and assigned a value.
+
+// You’ve noticed that pi uses a { }() self-executing closure pattern to calculate its value, even though it’s a stored property.
+
+
+***Key points - 
+- Propery observers won't be called on Initialisation of struct, class ,but called only when values is updated.
+-Properties are variables and constants that are part of a named type.
+-Stored properties allocate memory to store a value.
+-Computed properties are calculated each time your code requests them and aren’t stored as a value in memory.
+-The static modifier marks a type property that’s universal to all instances of a particular type.
+-The lazy modifier prevents a value of a stored property from being calculated until your code uses it for the first time. You’ll want to use lazy -initialization when a property’s initial value is computationally intensive or when you won’t know the initial value of a property until after you’ve initialized the object.
+
+
